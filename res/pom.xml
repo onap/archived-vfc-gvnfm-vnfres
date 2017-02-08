@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <!--
     Copyright 2017 ZTE Corporation.
 
@@ -25,7 +26,7 @@
     <artifactId>gvnfm-vnfres</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>gvnfm-vnfres</name>
+    <name>gvnfm-vnfres/res</name>
     <description>gvnfm vnfres</description>
     <build>
       <plugins>
