@@ -11,17 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from django.test import TestCase, Client
+from rest_framework import status
 
-from django.conf.urls import include, url
-from res.pub.config.config import REG_TO_MSB_WHEN_START, REG_TO_MSB_REG_URL, REG_TO_MSB_REG_PARAM
+from res.pub.database.models import NfInstModel
 
-urlpatterns = [
-    url(r'^', include('res.samples.urls')),
-    url(r'^', include('res.resources.urls')),
-]
 
-# regist to MSB when startup
-if REG_TO_MSB_WHEN_START:
-    import json
-    from res.pub.utils.restcall import req_by_msb
-    req_by_msb(REG_TO_MSB_REG_URL, "POST", json.JSONEncoder().encode(REG_TO_MSB_REG_PARAM))
+class ResourceTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        NfInstModel.objects.all().delete()
+
+    def tearDown(self):
+        pass
+        
+    def test_get_vnf(self):
+        vnf_inst_id = "1"
+        NfInstModel(nfinstid=vnf_inst_id, nf_name='VNF1').save()
+        response = self.client.get("/openoapi/vnfres/v1/vnfs/%s" % vnf_inst_id)
+        self.failUnlessEqual(status.HTTP_200_OK, response.status_code)

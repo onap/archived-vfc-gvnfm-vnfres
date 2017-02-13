@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'res.pub.database',
-    'res.samples'
+    'res.samples',
+    'res.resources'
 ]
 
 MIDDLEWARE_CLASSES = [
