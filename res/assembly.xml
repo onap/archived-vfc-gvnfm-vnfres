@@ -43,8 +43,8 @@
             </includes>
         </fileSet>
 		<fileSet>
-            <directory>assembly</directory>
-            <outputDirectory>/assembly</outputDirectory>
+            <directory>assembly/bin</directory>
+            <outputDirectory>/assembly/bin</outputDirectory>
             <includes>
                 <include>*.sh</include>
             </includes>
