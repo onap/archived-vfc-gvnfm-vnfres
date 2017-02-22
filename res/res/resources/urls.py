@@ -19,6 +19,7 @@ from res.resources import views
 
 urlpatterns = [
     url(r'^openoapi/vnfres/v1/vnfs/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)$', views.get_vnf, name='get_vnf'),
+    url(r'^openoapi/vnfres/v1/vnfs$', views.get_vnfs, name='get_vnfs'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

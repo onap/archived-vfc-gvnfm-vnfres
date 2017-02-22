@@ -60,4 +60,205 @@ class NfInstModel(models.Model):
     localizationLanguage = models.CharField(db_column='LOCALIZATIONLANGUAGE', max_length=255, null=True)
 
 
+class CPInstModel(models.Model):
+    class Meta:
+        db_table = 'CPINST'
+
+    cpinstanceid = models.CharField(db_column='CPINSTANCEID', max_length=255, primary_key=True)
+    cpdid = models.CharField(db_column='CPDID', max_length=255)
+    cpinstancename = models.CharField(db_column='CPINSTANCENAME', max_length=255)
+    vlinstanceid = models.CharField(db_column='VLINSTANCEID', max_length=255)
+    ownertype = models.IntegerField(db_column='OWNERTYPE')
+    ownerid = models.CharField(db_column='OWNERID', max_length=255)
+    relatedtype = models.IntegerField(db_column='RELATEDTYPE')
+    relatedvl = models.CharField(db_column='RELATEDVL', max_length=255, blank=True, null=True)
+    relatedcp = models.CharField(db_column='RELATEDCP', max_length=255, blank=True, null=True)
+    relatedport = models.CharField(db_column='RELATEDPORT', max_length=255, blank=True, null=True)
+
+class StorageInstModel(models.Model):
+    class Meta:
+        db_table = 'STORAGEINST'
+
+    storageid = models.CharField(db_column='STORAGEID', primary_key=True, max_length=255)
+    vimid = models.CharField(db_column='VIMID', max_length=255)
+    resouceid = models.CharField(db_column='RESOURCEID', max_length=255)
+    insttype = models.IntegerField(db_column='INSTTYPE')
+    instid = models.CharField(db_column='INSTID', max_length=255)
+    name = models.CharField(db_column='NAME', max_length=255, null=True)
+    storageDesc = models.CharField(db_column='STORAGEDESC', max_length=255, null=True)
+    storagetype = models.CharField(db_column='STORAGETYPE', max_length=255)
+    size = models.CharField(db_column='SIZE', max_length=255)
+    rdmaenabled = models.IntegerField(db_column='RDMAENABLED', null=True)
+    disktype = models.CharField(db_column='DISKTYPE', max_length=255)
+    ownerid = models.CharField(db_column='OWNERID', max_length=255, null=True)
+    zoneid = models.CharField(db_column='ZONEID', max_length=255, null=True)
+    hostid = models.CharField(db_column='HOSTID', max_length=255, null=True)
+    operationalstate = models.CharField(db_column='OPERATIONALSTATE', max_length=255, null=True)
+    tenant = models.CharField(db_column='TENANT', max_length=50, null=True)
+    is_predefined = models.IntegerField(db_column='ISPREDEFINED', default=0, null=True)
+
+
+class NetworkInstModel(models.Model):
+    class Meta:
+        db_table = 'NETWORKINST'
+
+    networkid = models.CharField(db_column='NETWORKID', primary_key=True, max_length=255)
+    vimid = models.CharField(db_column='VIMID', max_length=255)
+    resouceid = models.CharField(db_column='RESOURCEID', max_length=255)
+    insttype = models.IntegerField(db_column='INSTTYPE')
+    instid = models.CharField(db_column='INSTID', max_length=255)
+    name = models.CharField(db_column='NAME', max_length=255)
+    tenant = models.CharField(db_column='TENANT', max_length=255, null=True)
+    is_shared = models.IntegerField(db_column='ISSHARED', default=0, null=True)
+    is_predefined = models.IntegerField(db_column='ISPREDEFINED', default=0, null=True)
+    desc = models.CharField(db_column='DESC', max_length=255, null=True)
+    vendor = models.CharField(db_column='VENDOR', max_length=255, null=True)
+    bandwidth = models.IntegerField(db_column='BANDWIDTH', null=True)
+    mtu = models.IntegerField(db_column='MTU', null=True)
+    network_type = models.CharField(db_column='NETWORKTYPE', max_length=255, null=True)
+    segmentid = models.CharField(db_column='SEGMENTID', max_length=255, null=True)
+    vlantrans = models.IntegerField(db_column='VLANTRANS', null=True)
+    networkqos = models.CharField(db_column='NETWORKQOS', max_length=255, null=True)
+
+
+class SubNetworkInstModel(models.Model):
+    class Meta:
+        db_table = 'SUBNETWORKINST'
+
+    subnetworkid = models.CharField(db_column='SUBNETWORKID', primary_key=True, max_length=255)
+    vimid = models.CharField(db_column='VIMID', max_length=255)
+    resouceid = models.CharField(db_column='RESOURCEID', max_length=255)
+    networkid = models.CharField(db_column='NETWORKID', max_length=255)
+    insttype = models.IntegerField(db_column='INSTTYPE')
+    instid = models.CharField(db_column='INSTID', max_length=255)
+    name = models.CharField(db_column='NAME', max_length=255)
+    ipversion = models.IntegerField(db_column='IPVERSION', null=True)
+    gatewayip = models.CharField(db_column='GATEWAYIP', max_length=255, null=True)
+    isdhcpenabled = models.IntegerField(db_column='ISDHCPENABLED', null=True)
+    cidr = models.CharField(db_column='CIDR', max_length=255)
+    vdsname = models.CharField(db_column='VDSNAME', max_length=255, null=True)
+    operationalstate = models.CharField(db_column='OPERATIONALSTATE', max_length=255, null=True)
+    tenant = models.CharField(db_column='TENANT', max_length=255, null=True)
+    is_predefined = models.IntegerField(db_column='ISPREDEFINED', default=0, null=True)
+
+
+class PortInstModel(models.Model):
+    class Meta:
+        db_table = 'PORTINST'
+
+    portid = models.CharField(db_column='PORTID', primary_key=True, max_length=255)
+    networkid = models.CharField(db_column='NETWORKID', max_length=255)
+    subnetworkid = models.CharField(db_column='SUBNETWORKID', max_length=255, null=True)
+    vimid = models.CharField(db_column='VIMID', max_length=255)
+    resouceid = models.CharField(db_column='RESOURCEID', max_length=255)
+    name = models.CharField(db_column='NAME', max_length=255, null=True)
+    insttype = models.IntegerField(db_column='INSTTYPE')
+    instid = models.CharField(db_column='INSTID', max_length=255)
+    cpinstanceid = models.CharField(db_column='CPINSTANCEID', max_length=255, null=True)
+    bandwidth = models.CharField(db_column='BANDWIDTH', max_length=255, null=True)
+    operationalstate = models.CharField(db_column='OPERATIONALSTATE', max_length=255, null=True)
+    ipaddress = models.CharField(db_column='IPADDRESS', max_length=255)
+    macaddress = models.CharField(db_column='MACADDRESS', max_length=255)
+    nicorder = models.CharField(db_column='NICORDER', max_length=255)
+    floatipaddress = models.CharField(db_column='FLOATIPADDRESS', max_length=255, null=True)
+    serviceipaddress = models.CharField(db_column='SERVICEIPADDRESS', max_length=255, null=True)
+    typevirtualnic = models.CharField(db_column='TYPEVIRTUALNIC', max_length=255, null=True)
+    sfcencapsulation = models.CharField(db_column='SFCENCAPSULATION', max_length=255, null=True)
+    direction = models.CharField(db_column='DIRECTION', max_length=255, null=True)
+    tenant = models.CharField(db_column='TENANT', max_length=255, null=True)
+    interfacename = models.CharField(db_column='INTERFACENAME', max_length=255, blank=True, null=True)
+    vmid = models.CharField(db_column='VMID', max_length=255, blank=True, null=True)
+
+
+class FlavourInstModel(models.Model):
+    class Meta:
+        db_table = 'FLAVOURINST'
+
+    flavourid = models.CharField(db_column='FLAVOURID', max_length=255, primary_key=True)
+    name = models.CharField(db_column='NAME', max_length=255)
+    vcpu = models.CharField(db_column='VCPU', max_length=255)
+    memory = models.CharField(db_column='MEMORY', max_length=255)
+    extraspecs = models.CharField(db_column='EXTRASPECS', max_length=255)
+    instid = models.CharField(db_column='INSTID', max_length=255)
+
+
+class VmInstModel(models.Model):
+    class Meta:
+        db_table = 'VMINST'
+
+    vmid = models.CharField(db_column='VMID', primary_key=True, max_length=255)
+    vimid = models.CharField(db_column='VIMID', max_length=255)
+    resouceid = models.CharField(db_column='RESOURCEID', max_length=255)
+    insttype = models.IntegerField(db_column='INSTTYPE')
+    instid = models.CharField(db_column='INSTID', max_length=255)
+    vmname = models.CharField(db_column='VMNAME', max_length=255)
+    operationalstate = models.IntegerField(db_column='OPERATIONALSTATE', null=True)
+    zoneid = models.CharField(db_column='ZONEID', max_length=255, null=True)
+    tenant = models.CharField(db_column='TENANT', max_length=255, null=True)
+    hostid = models.CharField(db_column='HOSTID', max_length=255, null=True)
+    detailinfo = models.CharField(db_column='DETAILINFO', max_length=8192, null=True)
+    is_predefined = models.IntegerField(db_column='ISPREDEFINED', default=0, null=True)
+
+class VLInstModel(models.Model):
+    class Meta:
+        db_table = 'VLINST'
+
+    vlinstanceid = models.CharField(db_column='VLINSTANCEID', max_length=255, primary_key=True)
+    vldid = models.CharField(db_column='VLDID', max_length=255)
+    vlinstancename = models.CharField(db_column='VLINSTANCENAME', max_length=255, blank=True, null=True)
+    ownertype = models.IntegerField(db_column='OWNERTYPE')
+    ownerid = models.CharField(db_column='OWNERID', max_length=255)
+    relatednetworkid = models.CharField(db_column='RELATEDNETWORKID', max_length=255, blank=True, null=True)
+    relatedsubnetworkid = models.CharField(db_column='RELATEDSUBNETWORKID', max_length=255, blank=True, null=True)
+    vltype = models.IntegerField(db_column='VLTYPE', default=0)
+    vimid = models.CharField(db_column='VIMID', max_length=255)
+    tenant = models.CharField(db_column='TENANT', max_length=50)
+
+class VNFCInstModel(models.Model):
+    class Meta:
+        db_table = 'VNFCINST'
+
+    vnfcinstanceid = models.CharField(db_column='VNFCINSTANCEID', max_length=255, primary_key=True)
+    vduid = models.CharField(db_column='VDUID', max_length=255)
+    vdutype = models.CharField(db_column='VDUTYPE', max_length=255)
+    nfinstid = models.CharField(db_column='NFINSTID', max_length=255)
+    vmid = models.CharField(db_column='VMID', max_length=255)
+
+
+class VimModel(models.Model):
+    vimid = models.IntegerField(db_column='CMSERVERID', primary_key=True)
+    name = models.CharField(db_column='NAME', max_length=255, blank=True, null=True)
+    type = models.CharField(db_column='CMSTYPE', max_length=255, blank=True, null=True)
+    imageurl = models.CharField(db_column='IMAGEURL', max_length=1024, blank=True, null=True)
+    apiurl = models.CharField(db_column='APIURL', max_length=1024, blank=True, null=True)
+    version = models.CharField(db_column='VER', max_length=1024, blank=True, null=True)
+    supportnotification = models.IntegerField(db_column='SUPPORTNOTIFICATION', default=0)
+    longitude = models.CharField(db_column='LONGITUDE', max_length=1024, blank=True, null=True)
+    latitude = models.CharField(db_column='LATITUDE', max_length=1024, blank=True, null=True)
+    grantexclude = models.CharField(db_column='GRANTEXCLUDE', max_length=1, default='0', blank=True, null=True)
+    slalevel = models.IntegerField(db_column='SLALEVEL', default=0)
+
+    class Meta:
+        db_table = 'CMSSERVER'
+
+    def __unicode__(self):
+        return '%s' % self.name
+
+
+class VimUserModel(models.Model):
+    class Meta:
+        db_table = 'CMSSERVER_USER'
+
+    uuid = models.CharField(db_column='UUID', primary_key=True, max_length=255)
+    vimid = models.IntegerField(db_column='CMSERVERID')
+    username = models.CharField(db_column='USERNAME', max_length=255)
+    password = models.CharField(db_column='PWD', max_length=255, blank=True)
+    defaulttenant = models.CharField(db_column='TENANT', max_length=255, blank=True)
+
+    def __unicode__(self):
+        return '%s' % self.username
+
+
+
+
 
