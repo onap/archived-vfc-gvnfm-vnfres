@@ -1,3 +1,4 @@
-lcm/.idea
-lcm/logs/runtime_lcm.log
+res/.idea
+res/logs/runtime_res.log
 *.pyc
+bash.exe.stackdump
