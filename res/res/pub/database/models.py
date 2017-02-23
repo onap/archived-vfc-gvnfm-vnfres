@@ -259,6 +259,24 @@ class VimUserModel(models.Model):
         return '%s' % self.username
 
 
+class FlavourInstModel(models.Model):
+    class Meta:
+        db_table = 'FLAVOURINST'
+
+    flavourid = models.CharField(db_column='FLAVOURID', max_length=255, primary_key=True)
+    name = models.CharField(db_column='NAME', max_length=255)
+    vcpu = models.CharField(db_column='VCPU', max_length=255)
+    memory = models.CharField(db_column='MEMORY', max_length=255)
+    extraspecs = models.CharField(db_column='EXTRASPECS', max_length=255)
+    instid = models.CharField(db_column='INSTID', max_length=255)
+    tenant = models.CharField(db_column='TENANT', max_length=255, null=True)
+    vmid = models.CharField(db_column='VMID', max_length=255)
+    create_time = models.CharField(db_column='CREATETIME', max_length=200, null=True, blank=True)
+
+    def __unicode__(self):
+        return '%s' % self.name
+
+
 
 
 

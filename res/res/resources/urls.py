@@ -16,10 +16,18 @@ from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from res.resources import views
+from res.resources.views import SwaggerJsonView
 
 urlpatterns = [
     url(r'^openoapi/vnfres/v1/vnfs/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)$', views.get_vnf, name='get_vnf'),
     url(r'^openoapi/vnfres/v1/vnfs$', views.get_vnfs, name='get_vnfs'),
+    url(r'^'+'openoapi/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/vms$', views.get_vms, name='get_vms'),
+    url(r'^'+'openoapi/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/flavors$', views.get_flavors, name='get_flavors'),
+    url(r'^'+'openoapi/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/networks$', views.get_networks, name='get_networks'),
+    url(r'^'+'openoapi/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/subnets$', views.get_subnets, name='get_subnets'),
+    url(r'^'+'openoapi/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/cps$', views.get_cps, name='get_cps'),
+    url(r'^'+'openoapi/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/volumes$', views.get_volumes, name='get_volumes'),
+    url(r'^openoapi/vnfres/v1/resources/swagger.json$', SwaggerJsonView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

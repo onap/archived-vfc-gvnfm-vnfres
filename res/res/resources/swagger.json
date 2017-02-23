@@ -1,0 +1,331 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "ZTE vManager Service rest API"
+  },
+  "host": "10.43.104.27:8000",
+  "basePath": "/openoapi/vnfres/v1",
+  "tags": [
+    {
+      "name": "res Resource"
+    }
+  ],
+  "paths": {
+    "/vnfs/{vnfInstanceId}": {
+      "get": {
+        "tags": [
+          "vnf Resource"
+        ],
+        "summary": "query the specified vnf info",
+        "description": "",
+        "operationId": "query_vnf",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "description": "vnf instance id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/VNFInfo"
+            }
+          },
+          "404": {
+            "description": "the vnf instance id is wrong"
+          },
+          "500": {
+            "description": "the url is invalid"
+          }
+        }
+      }
+    },
+    "/vnfs": {
+      "get": {
+        "tags": [
+          "vnfs Resource"
+        ],
+        "summary": "query the specified vnfs info",
+        "description": "",
+        "operationId": "query_vnfs",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "request param",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SfcPostRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/VNFSInfo"
+            }
+          },
+          "404": {
+            "description": "the vnf instance id is wrong"
+          },
+          "500": {
+            "description": "the url is invalid"
+          }
+        }
+      }
+    },
+    "/{instid}/vms": {
+      "get": {
+        "tags": [
+          "vms Resource"
+        ],
+        "summary": "query the specified vm info",
+        "description": "",
+        "operationId": "query_vms",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instid",
+            "in": "path",
+            "description": "vnf instance id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/VMInfo"
+            }
+          },
+          "404": {
+            "description": "the vnf instance id is wrong"
+          },
+          "500": {
+            "description": "the url is invalid"
+          }
+        }
+      }
+    },
+    "/{instid}/flavors": {
+      "get": {
+        "tags": [
+          "flavors Resource"
+        ],
+        "summary": "query the specified flavor info",
+        "description": "",
+        "operationId": "query_flavors",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instid",
+            "in": "path",
+            "description": "vnf instance id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/FlavorInfo"
+            }
+          },
+          "404": {
+            "description": "the vnf instance id is wrong"
+          },
+          "500": {
+            "description": "the url is invalid"
+          }
+        }
+      }
+    },
+    "/{instid}/networks": {
+      "get": {
+        "tags": [
+          "networks Resource"
+        ],
+        "summary": "query the specified network info",
+        "description": "",
+        "operationId": "query_networks",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instid",
+            "in": "path",
+            "description": "vnf instance id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/NetworkInfo"
+            }
+          },
+          "404": {
+            "description": "the vnf instance id is wrong"
+          },
+          "500": {
+            "description": "the url is invalid"
+          }
+        }
+      }
+    },
+    "/{instid}/subnets": {
+      "get": {
+        "tags": [
+          "subnets Resource"
+        ],
+        "summary": "query the specified subnet info",
+        "description": "",
+        "operationId": "query_subnet",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instid",
+            "in": "path",
+            "description": "vnf instance id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SubnetInfo"
+            }
+          },
+          "404": {
+            "description": "the vnf instance id is wrong"
+          },
+          "500": {
+            "description": "the url is invalid"
+          }
+        }
+      }
+    },
+    "/{ownerid}/cps": {
+      "get": {
+        "tags": [
+          "sps Resource"
+        ],
+        "summary": "query the specified cp info",
+        "description": "",
+        "operationId": "query_cp",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ownerid",
+            "in": "path",
+            "description": "vnf instance id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CpInfo"
+            }
+          },
+          "404": {
+            "description": "the vnf instance id is wrong"
+          },
+          "500": {
+            "description": "the url is invalid"
+          }
+        }
+      }
+    },
+    "/{instid}/volumes": {
+      "get": {
+        "tags": [
+          "sps Resource"
+        ],
+        "summary": "query the specified volumes info",
+        "description": "",
+        "operationId": "query_volumes",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instid",
+            "in": "path",
+            "description": "vnf instance id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/VolumesInfo"
+            }
+          },
+          "404": {
+            "description": "the vnf instance id is wrong"
+          },
+          "500": {
+            "description": "the url is invalid"
+          }
+        }
+      }
+    }
+
+  }
+}
