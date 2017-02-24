@@ -38,8 +38,6 @@ def get_vnf(request, *args, **kwargs):
         vnf_inst = NfInstModel.objects.filter(nfinstid=vnf_inst_id)
         if not vnf_inst:
             return Response(data={'error': 'Vnf(%s) does not exist' % vnf_inst_id}, status=status.HTTP_404_NOT_FOUND)
-        # TODO: fill resp_data
-        # resp_data = {"vnfInstanceId": vnf_inst_id, "vnfInstanceName": vnf_inst[0].nf_name, "vnfInstanceDescription":}
         resp_data = fill_resp_data(vnf_inst[0])
         return Response(data=resp_data, status=status.HTTP_200_OK)
     except:
@@ -48,10 +46,6 @@ def get_vnf(request, *args, **kwargs):
 
 
 def fill_resp_data(vnf):
-    # cp_insts = CPInstModel.objects.filter(ownerid=vnf_inst_id)
-    # if not cp_insts:
-    #     raise VNFRESException('CpInst(%s) does not exist.' % vnf_inst_id)
-    # cp_inst = cp_insts.first()
     logger.info('Get the StorageInstModel of list')
     storage_inst = StorageInstModel.objects.filter(instid=vnf.nfinstid)
     arr = []
@@ -164,7 +158,6 @@ def get_vnfs(request):
         vnf_insts = NfInstModel.objects.all()
         if not vnf_insts:
             return Response(data={'error': 'Vnfs does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        # FIXME: fill resp_data
         arr = []
         for vnf_inst in vnf_insts:
             arr.append(fill_resp_data(vnf_inst))
@@ -182,7 +175,6 @@ def get_vms(request, *args, **kwargs):
         vms = VmInstModel.objects.filter(instid=vnf_inst_id)
         if not vms:
             return Response(data={'error': 'Vms does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        # FIXME: fill resp_data
         arr = []
         for vm in vms:
             arr.append(fill_vms_data(vm))
@@ -218,7 +210,6 @@ def get_flavors(request, *args, **kwargs):
         flavours = FlavourInstModel.objects.filter(instid=vnf_inst_id)
         if not flavours:
             return Response(data={'error': 'Flavours does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        # FIXME: fill resp_data
         arr = []
         for flavour in flavours:
             arr.append(fill_flavours_data(flavour))
@@ -242,6 +233,7 @@ def fill_flavours_data(f):
     }
     return flavours_data
 
+
 @api_view(http_method_names=['GET'])
 def get_networks(request, *args, **kwargs):
     logger.debug("Query all the networks by vnfInstanceId[%s]", fun_name())
@@ -250,7 +242,6 @@ def get_networks(request, *args, **kwargs):
         networks = NetworkInstModel.objects.filter(instid=vnf_inst_id)
         if not networks:
             return Response(data={'error': 'Networks does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        # FIXME: fill resp_data
         arr = []
         for network in networks:
             arr.append(fill_networks_data(network))
@@ -291,7 +282,6 @@ def get_subnets(request, *args, **kwargs):
         subnets = SubNetworkInstModel.objects.filter(instid=vnf_inst_id)
         if not subnets:
             return Response(data={'error': 'Subnets does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        # FIXME: fill resp_data
         arr = []
         for subnet in subnets:
             arr.append(fill_subnets_data(subnet))
@@ -323,7 +313,6 @@ def get_cps(request, *args, **kwargs):
         cps = CPInstModel.objects.filter(ownerid=vnf_inst_id)
         if not cps:
             return Response(data={'error': 'Cps does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        # FIXME: fill resp_data
         arr = []
         for cp in cps:
             arr.append(fill_cps_data(cp))
@@ -345,6 +334,7 @@ def fill_cps_data(cp):
     }
     return cps_data
 
+
 @api_view(http_method_names=['GET'])
 def get_volumes(request, *args, **kwargs):
     logger.debug("Query all the volumes by vnfInstanceId[%s]", fun_name())
@@ -353,7 +343,6 @@ def get_volumes(request, *args, **kwargs):
         volumes = StorageInstModel.objects.filter(instid=vnf_inst_id)
         if not volumes:
             return Response(data={'error': 'Volumes does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        # FIXME: fill resp_data
         arr = []
         for v in volumes:
             arr.append(fill_volumes_data(v))
