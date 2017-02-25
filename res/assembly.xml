@@ -26,6 +26,7 @@
             <outputDirectory>/res</outputDirectory>
             <includes>
                 <include>**/*.py</include>
+                <include>**/*.json</include>
             </includes>
         </fileSet>
         <fileSet>
