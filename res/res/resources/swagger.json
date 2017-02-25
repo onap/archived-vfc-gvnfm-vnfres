@@ -17,9 +17,9 @@
         "tags": [
           "vnf Resource"
         ],
-        "summary": "query the specified vnf info",
+        "summary": "query the single vnf info",
         "description": "",
-        "operationId": "query_vnf",
+        "operationId": "query_single_vnf",
         "consumes": [
           "application/json"
         ],
@@ -39,7 +39,7 @@
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/VNFInfo"
+              "$ref": "#/definitions/SingleVnfInfo"
             }
           },
           "404": {
@@ -56,9 +56,9 @@
         "tags": [
           "vnfs Resource"
         ],
-        "summary": "query the specified vnfs info",
+        "summary": "query the vnfs info",
         "description": "",
-        "operationId": "query_vnfs",
+        "operationId": "query_many_vnf",
         "consumes": [
           "application/json"
         ],
@@ -67,20 +67,17 @@
         ],
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "description": "request param",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/SfcPostRequest"
-            }
+            "name": "",
+            "in": "path",
+            "description": "no param",
+            "required": true
           }
         ],
         "responses": {
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/VNFSInfo"
+              "$ref": "#/definitions/VnfsInfo"
             }
           },
           "404": {
@@ -92,7 +89,7 @@
         }
       }
     },
-    "/{instid}/vms": {
+    "/{vnfInstanceId}/vms": {
       "get": {
         "tags": [
           "vms Resource"
@@ -108,7 +105,7 @@
         ],
         "parameters": [
           {
-            "name": "instid",
+            "name": "vnfInstanceId",
             "in": "path",
             "description": "vnf instance id",
             "required": true,
@@ -131,7 +128,7 @@
         }
       }
     },
-    "/{instid}/flavors": {
+    "/{vnfInstanceId}/flavors": {
       "get": {
         "tags": [
           "flavors Resource"
@@ -147,7 +144,7 @@
         ],
         "parameters": [
           {
-            "name": "instid",
+            "name": "vnfInstanceId",
             "in": "path",
             "description": "vnf instance id",
             "required": true,
@@ -170,7 +167,7 @@
         }
       }
     },
-    "/{instid}/networks": {
+    "/{vnfInstanceId}/networks": {
       "get": {
         "tags": [
           "networks Resource"
@@ -186,7 +183,7 @@
         ],
         "parameters": [
           {
-            "name": "instid",
+            "name": "vnfInstanceId",
             "in": "path",
             "description": "vnf instance id",
             "required": true,
@@ -209,7 +206,7 @@
         }
       }
     },
-    "/{instid}/subnets": {
+    "/{vnfInstanceId}/subnets": {
       "get": {
         "tags": [
           "subnets Resource"
@@ -225,7 +222,7 @@
         ],
         "parameters": [
           {
-            "name": "instid",
+            "name": "vnfInstanceId",
             "in": "path",
             "description": "vnf instance id",
             "required": true,
@@ -248,7 +245,7 @@
         }
       }
     },
-    "/{ownerid}/cps": {
+    "/{vnfInstanceId}/cps": {
       "get": {
         "tags": [
           "sps Resource"
@@ -264,7 +261,7 @@
         ],
         "parameters": [
           {
-            "name": "ownerid",
+            "name": "vnfInstanceId",
             "in": "path",
             "description": "vnf instance id",
             "required": true,
@@ -287,7 +284,7 @@
         }
       }
     },
-    "/{instid}/volumes": {
+    "/{vnfInstanceId}/volumes": {
       "get": {
         "tags": [
           "sps Resource"
@@ -303,7 +300,7 @@
         ],
         "parameters": [
           {
-            "name": "instid",
+            "name": "vnfInstanceId",
             "in": "path",
             "description": "vnf instance id",
             "required": true,
@@ -326,6 +323,314 @@
         }
       }
     }
-
+  },
+  "definitions": {
+    "SingleVnfInfo": {
+      "type": "object",
+      "properties": {
+        "vnfInstanceId": {
+          "type": "string"
+        },
+        "vnfInstanceName": {
+          "type": "string"
+        },
+        "vnfInstanceDescription": {
+          "type": "string"
+        },
+        "onboardedVnfPkgInfoId": {
+          "type": "string"
+        },
+        "vnfdId": {
+          "type": "string"
+        },
+        "vnfdVersion": {
+          "type": "string"
+        },
+        "vnfSoftwareVersion": {
+          "type": "string"
+        },
+        "vnfProvider": {
+          "type": "string"
+        },
+        "vnfProductName": {
+          "type": "string"
+        },
+        "vnfConfigurableProperties": {
+          "type": "object"
+        },
+        "instantiationState": {
+          "type": "string"
+        },
+        "instantiatedVnfInfo": {
+          "type": "object",
+          "properties": {
+            "flavourId": {
+              "type": "string"
+            },
+            "vnfState": {
+              "type": "string"
+            },
+            "scaleStatus": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "extCpInfo": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "extVirtualLink": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "monitoringParameters": {
+              "type": "object"
+            },
+            "localizationLanguage": {
+              "type": "string"
+            },
+            "vimInfo": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "vnfcResourceInfo": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "virtualLinkResourceInfo": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "virtualStorageResourceInfo": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      }
+    },
+    "VnfsInfo": {
+      "type": "array",
+      "items": {
+        "type": "SingleVnfInfo"
+      }
+    },
+    "VMInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "vmid": {
+            "type": "string"
+          },
+          "vimid": {
+            "type": "string"
+          },
+          "resouceid": {
+            "type": "string"
+          },
+          "insttype": {
+            "type": "integer"
+          },
+          "instid": {
+            "type": "string"
+          },
+          "vmname": {
+            "type": "string"
+          },
+          "operationalstate": {
+            "type": "integer"
+          },
+          "zoneid": {
+            "type": "string"
+          },
+          "tenant": {
+            "type": "string"
+          },
+          "hostid": {
+            "type": "string"
+          },
+          "detailinfo": {
+            "type": "string"
+          },
+          "is_predefined": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "FlavorInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "flavourid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "vcpu": {
+            "type": "string"
+          },
+          "memory": {
+            "type": "string"
+          },
+          "extraspecs": {
+            "type": "string"
+          },
+          "instid": {
+            "type": "string"
+          },
+          "tenant": {
+            "type": "string"
+          },
+          "vmid": {
+            "type": "string"
+          },
+          "create_time": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "NetworkInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "networkid": {
+            "type": "string"
+          },
+          "vimid": {
+            "type": "string"
+          },
+          "resouceid": {
+            "type": "string"
+          },
+          "insttype": {
+            "type": "integer"
+          },
+          "instid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SubnetInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "subnetworkid": {
+            "type": "string"
+          },
+          "networkid": {
+            "type": "string"
+          },
+          "vimid": {
+            "type": "string"
+          },
+          "resouceid": {
+            "type": "string"
+          },
+          "insttype": {
+            "type": "integer"
+          },
+          "instid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "cidr": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "CpInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cpinstanceid": {
+            "type": "string"
+          },
+          "cpdid": {
+            "type": "string"
+          },
+          "cpinstancename": {
+            "type": "string"
+          },
+          "vlinstanceid": {
+            "type": "string"
+          },
+          "ownertype": {
+            "type": "integer"
+          },
+          "ownerid": {
+            "type": "string"
+          },
+          "relatedtype": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "VolumesInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "storageid": {
+            "type": "string"
+          },
+          "vimid": {
+            "type": "string"
+          },
+          "resouceid": {
+            "type": "string"
+          },
+          "insttype": {
+            "type": "integer"
+          },
+          "instid": {
+            "type": "string"
+          },
+          "storagetype": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "disktype": {
+            "type": "string"
+          }
+        }
+      }
+    }
   }
 }
