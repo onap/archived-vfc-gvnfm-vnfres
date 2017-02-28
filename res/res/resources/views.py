@@ -25,7 +25,7 @@ from res.pub.exceptions import VNFRESException
 from res.pub.utils.values import ignore_case_get
 from res.pub.utils.syscomm import fun_name
 from res.pub.database.models import NfInstModel, StorageInstModel, NetworkInstModel, VLInstModel, \
-    VNFCInstModel, VmInstModel, VimModel, VimUserModel, FlavourInstModel, SubNetworkInstModel, CPInstModel
+    VNFCInstModel, VmInstModel, FlavourInstModel, SubNetworkInstModel, CPInstModel
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +52,7 @@ def fill_resp_data(vnf):
     for s in storage_inst:
         storage = {
             "virtualStorageInstanceId": s.storageid,
-            "virtualStorageDescId": s.storageDesc,
+            "virtualStorageDescId": s.storagetype,
             "storageResource": {
                 "vimId": s.vimid,
                 "resourceId": s.resouceid
@@ -76,7 +76,7 @@ def fill_resp_data(vnf):
                 }
         vl_arr.append(v_dic)
     logger.info('Get VNFCInstModel of list.')
-    vnfc_insts = VNFCInstModel.objects.filter(nfinstid=vnf.nfinstid)
+    vnfc_insts = VNFCInstModel.objects.filter(instid=vnf.nfinstid)
     vnfc_arr = []
     for vnfc in vnfc_insts:
         vm = VmInstModel.objects.filter(vmid=vnfc.vmid)
@@ -97,28 +97,30 @@ def fill_resp_data(vnf):
         vnfc_arr.append(vnfc_dic)
     logger.info('Get the VimInstModel of list.')
     vms = VmInstModel.objects.filter(instid=vnf.nfinstid)
-    vim_arr = []
+    vm_arr = []
     # The 'vimInfoId' and 'vimId' each value are same
     for vm in vms:
-        vims = VimModel.objects.filter(vimid=vm.vimid)
-        for vim in vims:
-            vim_users = VimUserModel.objects.filter(vimid=vim.vimid)
-            vim_dic = {
-                    "vimInfoId": vim.vimid,
-                    "vimId": vim.vimid,
-                    "interfaceInfo": {
-                        "vimType": vim.type,
-                        "apiVersion": vim.version,
-                        "protocolType": (vim.apiurl.split(':')[0] if vim.apiurl and vim.apiurl.index(':') else 'http')
-                    },
-                    "accessInfo": {
-                        "tenant": (vim_users[0].defaulttenant if vim_users and vim_users[0].defaulttenant else ''),
-                        "username": (vim_users[0].username if vim_users and vim_users[0].username else ''),
-                        "password": (vim_users[0].password if vim_users and vim_users[0].password else '')
-                    },
-                    "interfaceEndpoint": vim.apiurl
-            }
-            vim_arr.append(vim_dic)
+        vm_dic = {
+            "vmid": vm.vmid,
+            "vimid": vm.vimid,
+            "tenant": vm.tenant,
+            "resouceid": vm.resouceid,
+            "vmname": vm.vmname,
+            "nic_array": vm.nic_array,
+            "metadata": vm.metadata,
+            "volume_array": vm.volume_array,
+            "server_group": vm.server_group,
+            "availability_zone": vm.availability_zone,
+            "flavor_id": vm.flavor_id,
+            "security_groups": vm.security_groups,
+            "operationalstate": vm.operationalstate,
+            "insttype": vm.insttype,
+            "is_predefined": vm.is_predefined,
+            "create_time": vm.create_time,
+            "instid": vm.instid,
+            "nodeId": vm.nodeId
+        }
+        vm_arr.append(vm_dic)
 
     resp_data = {
         "vnfInstanceId": vnf.nfinstid,
@@ -129,9 +131,9 @@ def fill_resp_data(vnf):
         "vnfdVersion": vnf.version,
         "vnfSoftwareVersion": vnf.vnfSoftwareVersion,
         "vnfProvider": vnf.vendor,
-        "vnfProductName": vnf.producttype,
+        "vnfProductName": vnf.netype,
         "vnfConfigurableProperties": {vnf.vnfConfigurableProperties},
-        "instantiationState": vnf.instantiationState,
+        "instantiationState": vnf.status,
         "instantiatedVnfInfo": {
             "flavourId": vnf.flavour_id,
             "vnfState": vnf.status,
@@ -140,13 +142,13 @@ def fill_resp_data(vnf):
             "extVirtualLink": [],
             "monitoringParameters": {},
             "localizationLanguage": vnf.localizationLanguage,
-            "vimInfo": vim_arr,
+            "vmInfo": vm_arr,
             "vnfcResourceInfo": vnfc_arr,
             "virtualLinkResourceInfo": vl_arr,
             "virtualStorageResourceInfo": arr
         },
         "metadata": vnf.input_params,
-        "extensions": vnf.extension
+        "extensions": vnf.vnfd_model
     }
     return resp_data
 
@@ -193,11 +195,15 @@ def fill_vms_data(vm):
         "instid": vm.instid,
         "vmname": vm.vmname,
         "operationalstate": vm.operationalstate,
-        "zoneid": vm.zoneid,
         "tenant": vm.tenant,
-        "hostid": vm.hostid,
-        "detailinfo": vm.detailinfo,
-        "is_predefined": vm.is_predefined
+        "is_predefined": vm.is_predefined,
+        "security_groups": vm.security_groups,
+        "flavor_id": vm.flavor_id,
+        "availability_zone": vm.availability_zone,
+        "server_group": vm.server_group,
+        "volume_array": vm.volume_array,
+        "metadata": vm.metadata,
+        "nic_array": vm.nic_array
     }
     return vms_data
 
@@ -228,11 +234,11 @@ def fill_flavours_data(f):
         "extraspecs": f.extraspecs,
         "instid": f.instid,
         "tenant": f.tenant,
-        "vmid": f.vmid,
+        "vimid": f.vimid,
+        "resouceid": f.resouceid,
         "create_time": f.create_time
     }
     return flavours_data
-
 
 @api_view(http_method_names=['GET'])
 def get_networks(request, *args, **kwargs):
@@ -334,7 +340,6 @@ def fill_cps_data(cp):
     }
     return cps_data
 
-
 @api_view(http_method_names=['GET'])
 def get_volumes(request, *args, **kwargs):
     logger.debug("Query all the volumes by vnfInstanceId[%s]", fun_name())
@@ -360,8 +365,7 @@ def fill_volumes_data(v):
         "insttype": v.insttype,
         "instid": v.instid,
         "storagetype": v.storagetype,
-        "size": v.size,
-        "disktype": v.disktype
+        "size": v.size
     }
     return volumes_data
 

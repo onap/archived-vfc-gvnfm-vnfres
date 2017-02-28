@@ -458,18 +458,18 @@
             "type": "string"
           },
           "operationalstate": {
-            "type": "integer"
+            "type": "string"
           },
-          "zoneid": {
+          "availability_zone": {
             "type": "string"
           },
           "tenant": {
             "type": "string"
           },
-          "hostid": {
+          "nodeId": {
             "type": "string"
           },
-          "detailinfo": {
+          "metadata": {
             "type": "string"
           },
           "is_predefined": {
@@ -490,10 +490,10 @@
             "type": "string"
           },
           "vcpu": {
-            "type": "string"
+            "type": "integer"
           },
           "memory": {
-            "type": "string"
+            "type": "integer"
           },
           "extraspecs": {
             "type": "string"
@@ -504,7 +504,7 @@
           "tenant": {
             "type": "string"
           },
-          "vmid": {
+          "vimid": {
             "type": "string"
           },
           "create_time": {
@@ -624,9 +624,6 @@
             "type": "string"
           },
           "size": {
-            "type": "string"
-          },
-          "disktype": {
             "type": "string"
           }
         }
