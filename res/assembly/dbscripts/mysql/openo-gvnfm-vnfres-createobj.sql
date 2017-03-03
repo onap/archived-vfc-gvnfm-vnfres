@@ -238,28 +238,6 @@ CREATE TABLE `CPINST` (
     `RELATEDPORT` varchar(255)
 )
 ;
-CREATE TABLE `CMSSERVER` (
-    `CMSERVERID` integer NOT NULL PRIMARY KEY,
-    `NAME` varchar(255),
-    `CMSTYPE` varchar(255),
-    `IMAGEURL` varchar(1024),
-    `APIURL` varchar(1024),
-    `VER` varchar(1024),
-    `SUPPORTNOTIFICATION` integer NOT NULL,
-    `LONGITUDE` varchar(1024),
-    `LATITUDE` varchar(1024),
-    `GRANTEXCLUDE` varchar(1),
-    `SLALEVEL` integer NOT NULL
-)
-;
-CREATE TABLE `CMSSERVER_USER` (
-    `UUID` varchar(255) NOT NULL PRIMARY KEY,
-    `CMSERVERID` integer NOT NULL,
-    `USERNAME` varchar(255) NOT NULL,
-    `PWD` varchar(255) NOT NULL,
-    `TENANT` varchar(255) NOT NULL
-)
-;
 CREATE TABLE `VNF_REG` (
     `ID` varchar(200) NOT NULL PRIMARY KEY,
     `IP` varchar(200) NOT NULL,
