@@ -62,5 +62,5 @@
             </includes>
         </fileSet>
     </fileSets>
-    <baseDirectory>gvnfm-vnfres/res</baseDirectory>
+    <baseDirectory>vfc/gvnfm/vnfres/res</baseDirectory>
 </assembly>
