@@ -5,7 +5,7 @@
     "title": "ZTE vManager Service rest API"
   },
   "host": "10.43.104.27:8000",
-  "basePath": "/openoapi/vnfres/v1",
+  "basePath": "/api/vnfres/v1",
   "tags": [
     {
       "name": "res Resource"
