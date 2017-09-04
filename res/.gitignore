@@ -1,4 +1,4 @@
-../.idea
+.idea
 logs/runtime_res.log
 *.pyc
 bash.exe.stackdump
