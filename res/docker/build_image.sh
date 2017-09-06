@@ -19,16 +19,16 @@ if [ $HTTPS_PROXY ]; then
     BUILD_ARGS+=" --build-arg HTTPS_PROXY=${HTTPS_PROXY}"
 fi
 
-function build_vnfres {
+function build_image {
     echo "Start build docker image: ${IMAGE_NAME}"
     docker build ${BUILD_ARGS} -t ${IMAGE_NAME}:${VERSION} -t ${IMAGE_NAME}:latest .
 }
 
-function push_vnfres {
+function push_image {
     echo "Start push docker image: ${IMAGE_NAME}"
     docker push ${IMAGE_NAME}:${VERSION}
     docker push ${IMAGE_NAME}:latest
 }
 
-build_vnfres
-push_vnfres
+build_image
+push_image

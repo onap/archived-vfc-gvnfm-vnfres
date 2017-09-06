@@ -30,7 +30,7 @@ RUN apt-get update && \
 ADD . /service
 WORKDIR /service
 
-# get binary zip from nexus - vfc-nfvo-lcm
+# get binary zip from nexus
 RUN wget -q -O vfc-gvnfm-vnfres.zip 'https://nexus.onap.org/service/local/artifact/maven/redirect?r=snapshots&g=org.onap.vfc.gvnfm.vnfres&a=vfc-gvnfm-vnfres-res&v=LATEST&e=zip' && \
     unzip vfc-gvnfm-vnfres.zip && \
     rm -rf vfc-gvnfm-vnfres.zip
