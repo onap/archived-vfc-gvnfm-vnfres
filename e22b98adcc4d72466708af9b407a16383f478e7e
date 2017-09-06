@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_1a64c6b7",
+        "filename": "res/docker/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1389
+      },
+      "writtenOn": "2017-09-06T05:14:10Z",
+      "side": 1,
+      "message": "remove this",
+      "range": {
+        "startLine": 27,
+        "startChar": 33,
+        "endLine": 28,
+        "endChar": 34
+      },
+      "revId": "e22b98adcc4d72466708af9b407a16383f478e7e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_fa58e2fb",
+        "filename": "res/docker/instance_init.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1389
+      },
+      "writtenOn": "2017-09-06T05:14:10Z",
+      "side": 1,
+      "message": "delete this",
+      "range": {
+        "startLine": 8,
+        "startChar": 1,
+        "endLine": 8,
+        "endChar": 38
+      },
+      "revId": "e22b98adcc4d72466708af9b407a16383f478e7e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_9a6f9692",
+        "filename": "res/docker/instance_init.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1389
+      },
+      "writtenOn": "2017-09-06T05:14:10Z",
+      "side": 1,
+      "message": "add sleep 1",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 7
+      },
+      "revId": "e22b98adcc4d72466708af9b407a16383f478e7e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_ba725a7a",
+        "filename": "res/docker/instance_init.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1389
+      },
+      "writtenOn": "2017-09-06T05:14:10Z",
+      "side": 1,
+      "message": "delete this",
+      "range": {
+        "startLine": 10,
+        "startChar": 3,
+        "endLine": 14,
+        "endChar": 8
+      },
+      "revId": "e22b98adcc4d72466708af9b407a16383f478e7e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
