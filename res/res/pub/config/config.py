@@ -25,9 +25,9 @@ REDIS_PASSWD = ''
 # [mysql]
 DB_IP = "127.0.0.1"
 DB_PORT = 3306
-DB_NAME = "vfcvnfres"
-DB_USER = "vfcvnfres"
-DB_PASSWD = "vfcvnfres"
+DB_NAME = "gvnfm"
+DB_USER = "gvnfm"
+DB_PASSWD = "gvnfm"
 
 # [register]
 REG_TO_MSB_WHEN_START = True

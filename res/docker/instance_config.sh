@@ -21,9 +21,9 @@ if [ $REDIS_HOST ]; then
     sed -i "s|REDIS_HOST.*|REDIS_HOST = '$REDIS_HOST'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
 fi
 
-sed -i "s|DB_NAME.*|DB_NAME = 'vfcvnfres'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
-sed -i "s|DB_USER.*|DB_USER = 'vfcvnfres'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
-sed -i "s|DB_PASSWD.*|DB_PASSWD = 'vfcvnfres'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
+sed -i "s|DB_NAME.*|DB_NAME = 'gvnfm'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
+sed -i "s|DB_USER.*|DB_USER = 'gvnfm'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
+sed -i "s|DB_PASSWD.*|DB_PASSWD = 'gvnfm'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
 
 # Configure MYSQL
 if [ -z "$MYSQL_ADDR" ]; then
