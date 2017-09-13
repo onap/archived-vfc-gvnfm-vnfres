@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+
 import json
 import logging
 import os
@@ -339,6 +341,7 @@ def fill_cps_data(cp):
         "relatedtype": cp.relatedtype
     }
     return cps_data
+
 
 @api_view(http_method_names=['GET'])
 def get_volumes(request, *args, **kwargs):
