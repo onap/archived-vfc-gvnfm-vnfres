@@ -23,7 +23,7 @@ port=$3
 host=$4
 echo "start create resource management db"
 sql_path=$HOME/../
-mysql -u$user -p$password -P$port -h$host <$sql_path/dbscripts/mysql/openo-gvnfm-vnfres-createdb.sql
+mysql -u$user -p$password -P$port -h$host <$sql_path/dbscripts/mysql/onap-gvnfm-vnfres-createdb.sql
 sql_result=$?
 if [ $sql_result != 0 ] ; then
     echo "failed to create resource management database"
