@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 DIRNAME=`dirname $0`
 HOME=`cd $DIRNAME/; pwd`
 user=$1

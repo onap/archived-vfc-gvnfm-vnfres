@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 from django.test import TestCase, Client
 from rest_framework import status
 
@@ -156,14 +155,12 @@ class ResourceTest(TestCase):
         self.failUnlessEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(self.test_data, response.data)
 
-
     def test_get_vnfs(self):
         for i in range(1):
             NfInstModel(nfinstid='%s' % i, nf_name='VNF%s' % i).save()
             StorageInstModel(storageid='s0%s' % i, vimid='vim0%s' % i, resouceid='resource0%s' % i, insttype=1, instid='%s' % i, storagetype='desc%s' % i, size='ten').save()
         response = self.client.get("/api/vnfres/v1/vnfs")
         self.failUnlessEqual(status.HTTP_200_OK, response.status_code)
-        # self.assertEqual(self.test_data, response.data)
 
     def test_get_vms(self):
         NfInstModel(nfinstid='%s' % '01', nf_name='VFS%s' % '01').save()

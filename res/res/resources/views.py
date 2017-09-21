@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import json
 import logging
 import os
@@ -242,6 +241,7 @@ def fill_flavours_data(f):
     }
     return flavours_data
 
+
 @api_view(http_method_names=['GET'])
 def get_networks(request, *args, **kwargs):
     logger.debug("Query all the networks by vnfInstanceId[%s]", fun_name())
@@ -267,17 +267,6 @@ def fill_networks_data(network):
         "insttype": network.insttype,
         "instid": network.instid,
         "name": network.name
-        # "tenant": network.tenant,
-        # "is_shared": network.is_shared,
-        # "is_predefined": network.is_predefined,
-        # "desc": network.desc,
-        # "vendor": network.vendor,
-        # "bandwidth": network.bandwidth,
-        # "mtu": network.mtu,
-        # "network_type": network.network_type,
-        # "segmentid": network.segmentid,
-        # "vlantrans": network.vlantrans,
-        # "networkqos": network.networkqos
     }
     return networks_data
 
