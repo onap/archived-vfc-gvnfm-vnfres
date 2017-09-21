@@ -13,5 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-ps auxww | grep 'manage.py runserver 127.0.0.1:8802' | awk '{print $2}' | xargs kill -9
+ps auxww | grep 'manage.py runserver 0.0.0.0:8802' | awk '{print $2}' | xargs kill -9
