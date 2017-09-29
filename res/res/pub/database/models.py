@@ -55,6 +55,7 @@ class CPInstModel(models.Model):
     relatedcp = models.CharField(db_column='RELATEDCP', max_length=255, blank=True, null=True)
     relatedport = models.CharField(db_column='RELATEDPORT', max_length=255, blank=True, null=True)
 
+
 class StorageInstModel(models.Model):
     class Meta:
         db_table = 'STORAGEINST'
@@ -201,6 +202,7 @@ class VLInstModel(models.Model):
     vltype = models.IntegerField(db_column='VLTYPE', default=0)
     vimid = models.CharField(db_column='VIMID', max_length=255)
     tenant = models.CharField(db_column='TENANT', max_length=50)
+
 
 class VNFCInstModel(models.Model):
     class Meta:
