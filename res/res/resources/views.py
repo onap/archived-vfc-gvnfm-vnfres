@@ -68,13 +68,13 @@ def fill_resp_data(vnf):
         if not net:
             raise VNFRESException('NetworkInst(%s) does not exist.' % v.relatednetworkid)
         v_dic = {
-                    "virtualLinkInstanceId": v.vlinstanceid,
-                    "virtualLinkDescId": v.vldid,
-                    "networkResource": {
-                        "vimId": net[0].vimid,
-                        "resourceId": net[0].resouceid
-                    }
-                }
+            "virtualLinkInstanceId": v.vlinstanceid,
+            "virtualLinkDescId": v.vldid,
+            "networkResource": {
+                "vimId": net[0].vimid,
+                "resourceId": net[0].resouceid
+            }
+        }
         vl_arr.append(v_dic)
     logger.info('Get VNFCInstModel of list.')
     vnfc_insts = VNFCInstModel.objects.filter(instid=vnf.nfinstid)
@@ -87,13 +87,13 @@ def fill_resp_data(vnf):
         if not storage:
             raise VNFRESException('StorageInst(%s) does not exist.' % vm[0].vmid)
         vnfc_dic = {
-                    "vnfcInstanceId": vnfc.vnfcinstanceid,
-                    "vduId": vnfc.vduid,
-                    "computeResource": {
-                        "vimId": vm[0].vimid,
-                        "resourceId": vm[0].resouceid
-                    },
-                    "storageResourceIds": [s.storageid for s in storage]
+            "vnfcInstanceId": vnfc.vnfcinstanceid,
+            "vduId": vnfc.vduid,
+            "computeResource": {
+                "vimId": vm[0].vimid,
+                "resourceId": vm[0].resouceid
+            },
+            "storageResourceIds": [s.storageid for s in storage]
         }
         vnfc_arr.append(vnfc_dic)
     logger.info('Get the VimInstModel of list.')
