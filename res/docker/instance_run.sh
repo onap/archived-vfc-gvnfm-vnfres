@@ -1,7 +1,6 @@
 #!/bin/bash
 
 cd /service/vfc/gvnfm/vnfres/res
-chmod +x run.sh
 ./run.sh
 
 while [ ! -f logs/runtime_res.log ]; do
