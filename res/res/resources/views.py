@@ -41,7 +41,8 @@ def get_vnf(request, *args, **kwargs):
             return Response(data={'error': 'Vnf(%s) does not exist' % vnf_inst_id}, status=status.HTTP_404_NOT_FOUND)
         resp_data = fill_resp_data(vnf_inst[0])
         return Response(data=resp_data, status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        logger.error(e.message)
         logger.error(traceback.format_exc())
         return Response(data={'error': 'Failed to get Vnf(%s)' % vnf_inst_id}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -165,7 +166,8 @@ def get_vnfs(request):
         for vnf_inst in vnf_insts:
             arr.append(fill_resp_data(vnf_inst))
         return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        logger.error(e.message)
         logger.error(traceback.format_exc())
         return Response(data={'error': 'Failed to get Vnfs'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -182,7 +184,8 @@ def get_vms(request, *args, **kwargs):
         for vm in vms:
             arr.append(fill_vms_data(vm))
         return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        logger.error(e.message)
         logger.error(traceback.format_exc())
         return Response(data={'error': 'Failed to get Vms'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -221,7 +224,8 @@ def get_flavors(request, *args, **kwargs):
         for flavour in flavours:
             arr.append(fill_flavours_data(flavour))
         return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        logger.error(e.message)
         logger.error(traceback.format_exc())
         return Response(data={'error': 'Failed to get flavours'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -254,7 +258,8 @@ def get_networks(request, *args, **kwargs):
         for network in networks:
             arr.append(fill_networks_data(network))
         return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        logger.error(e.message)
         logger.error(traceback.format_exc())
         return Response(data={'error': 'Failed to get networks'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -283,7 +288,8 @@ def get_subnets(request, *args, **kwargs):
         for subnet in subnets:
             arr.append(fill_subnets_data(subnet))
         return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        logger.error(e.message)
         logger.error(traceback.format_exc())
         return Response(data={'error': 'Failed to get subnets'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -314,7 +320,8 @@ def get_cps(request, *args, **kwargs):
         for cp in cps:
             arr.append(fill_cps_data(cp))
         return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        logger.error(e.message)
         logger.error(traceback.format_exc())
         return Response(data={'error': 'Failed to get cps'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -344,7 +351,8 @@ def get_volumes(request, *args, **kwargs):
         for v in volumes:
             arr.append(fill_volumes_data(v))
         return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        logger.error(e.message)
         logger.error(traceback.format_exc())
         return Response(data={'error': 'Failed to get volumes'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
