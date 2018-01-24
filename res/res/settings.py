@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'res.pub.database',
     'res.samples',
-    'res.resources'
+    'res.resources',
+    'drf_yasg',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -74,6 +75,30 @@ REST_FRAMEWORK = {
         # 'rest_framework.parsers.FormParser',
         # 'rest_framework.parsers.FileUploadParser',
     )
+}
+
+# drf-yasg
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': '/admin/login',
+    'LOGOUT_URL': '/admin/logout',
+
+    'DEFAULT_INFO': 'res.urls.swagger_info'
 }
 
 DATABASES = {
