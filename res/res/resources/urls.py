@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/networks$', views.get_networks, name='get_networks'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/subnets$', views.get_subnets, name='get_subnets'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/cps$', views.get_cps, name='get_cps'),
-    url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/volumes$', views.get_volumes, name='get_volumes'),
+    url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/volumes$', views.getVolumes.as_view(), name='get_volumes'),
     url(r'^api/vnfres/v1/swagger.json$', SwaggerJsonView.as_view()),
 ]
 

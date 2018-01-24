@@ -15,6 +15,10 @@
 from rest_framework import serializers
 
 
+class NoneSerializer(serializers.Serializer):
+    pass
+
+
 class VolumeResponseSerializer(serializers.Serializer):
     storageid = serializers.CharField(help_text="the storage id", required=True)
     vimid = serializers.CharField(help_text="the vim id", required=True)

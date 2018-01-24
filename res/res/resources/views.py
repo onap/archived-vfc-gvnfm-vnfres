@@ -17,6 +17,7 @@ import logging
 import os
 import traceback
 
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -27,6 +28,7 @@ from res.pub.utils.values import ignore_case_get
 from res.pub.utils.syscomm import fun_name
 from res.pub.database.models import NfInstModel, StorageInstModel, NetworkInstModel, VLInstModel, \
     VNFCInstModel, VmInstModel, FlavourInstModel, SubNetworkInstModel, CPInstModel
+from res.resources.serializers import VolumeInfoSerializer, NoneSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -339,22 +341,31 @@ def fill_cps_data(cp):
     return cps_data
 
 
-@api_view(http_method_names=['GET'])
-def get_volumes(request, *args, **kwargs):
-    logger.debug("Query all the volumes by vnfInstanceId[%s]", fun_name())
-    try:
-        vnf_inst_id = ignore_case_get(kwargs, "vnfInstanceId")
-        volumes = StorageInstModel.objects.filter(instid=vnf_inst_id)
-        if not volumes:
-            return Response(data={'error': 'Volumes does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        arr = []
-        for v in volumes:
-            arr.append(fill_volumes_data(v))
-        return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except Exception as e:
-        logger.error(e.message)
-        logger.error(traceback.format_exc())
-        return Response(data={'error': 'Failed to get volumes'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class getVolumes(APIView):
+    @swagger_auto_schema(request_body=NoneSerializer(),
+                         responses={
+                             status.HTTP_200_OK: VolumeInfoSerializer(),
+                             status.HTTP_404_NOT_FOUND: 'Volumes does not exist',
+                             status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+    def get(self, request, vnfInstanceId):
+        logger.debug("Query all the volumes by vnfInstanceId[%s]", fun_name())
+        try:
+            volumes = StorageInstModel.objects.filter(instid=vnfInstanceId)
+            if not volumes:
+                return Response(data={'error': 'Volumes does not exist'}, status=status.HTTP_404_NOT_FOUND)
+            arr = []
+            for v in volumes:
+                arr.append(fill_volumes_data(v))
+            volumeSerializer = VolumeInfoSerializer(data={'resp_data': arr})
+            isValid = volumeSerializer.is_valid()
+            if not isValid:
+                raise Exception(volumeSerializer.errors)
+
+            return Response(data=volumeSerializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(e.message)
+            logger.error(traceback.format_exc())
+            return Response(data={'error': 'Failed to get volumes'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_volumes_data(v):
