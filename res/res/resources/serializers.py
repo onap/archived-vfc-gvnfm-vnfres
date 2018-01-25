@@ -19,6 +19,42 @@ class NoneSerializer(serializers.Serializer):
     pass
 
 
+# {
+#     "resp_data": [{
+#         "cpinstanceid": "cp0",
+#         "cpdid": "cpd0",
+#         "cpinstancename": "cpinstname0",
+#         "vlinstanceid": "vlinst0",
+#         "ownertype": 0,
+#         "ownerid": "01",
+#         "relatedtype": 0
+#     }]
+# }
+class CpsResponseSerializer(serializers.Serializer):
+    cpinstanceid = serializers.CharField(help_text="the cp instance id", required=True)
+    cpdid = serializers.CharField(help_text="the cpd id", required=True)
+    cpinstancename = serializers.CharField(help_text="the cp instance name of vnf", required=True)
+    vlinstanceid = serializers.CharField(help_text="the vl instance id of vnf", required=True)
+    ownertype = serializers.IntegerField(help_text="the owner type of vnf", required=True)
+    ownerid = serializers.CharField(help_text="the owner id of vnf", required=True)
+    relatedtype = serializers.IntegerField(help_text="the related type", required=True)
+
+
+class CpsInfoSerializer(serializers.Serializer):
+    resp_data = CpsResponseSerializer(help_text="the response data", many=True)
+
+
+# {
+#     "resp_data": [{
+#         "storageid": "st0",
+#         "vimid": "vim0",
+#         "resouceid": "res0",
+#         "insttype": 0,
+#         "instid": "01",
+#         "storagetype": "stype0",
+#         "size": "0"
+#     }]
+# }
 class VolumeResponseSerializer(serializers.Serializer):
     storageid = serializers.CharField(help_text="the storage id", required=True)
     vimid = serializers.CharField(help_text="the vim id", required=True)
