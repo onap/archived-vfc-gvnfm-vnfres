@@ -219,7 +219,3 @@ class ResourceTest(TestCase):
         response = self.client.get("/api/vnfres/v1/%s/volumes" % self.nf_inst_id)
         self.assertEqual(self.volumes_data, response.data)
         self.failUnlessEqual(status.HTTP_200_OK, response.status_code)
-
-    def test_swagger_ok(self):
-        resp = self.client.get("/api/vnfres/v1/swagger.json", format="json")
-        self.assertEqual(resp.status_code, status.HTTP_200_OK, resp.content)
