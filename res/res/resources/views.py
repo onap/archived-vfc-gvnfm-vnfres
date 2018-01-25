@@ -28,7 +28,7 @@ from res.pub.utils.values import ignore_case_get
 from res.pub.utils.syscomm import fun_name
 from res.pub.database.models import NfInstModel, StorageInstModel, NetworkInstModel, VLInstModel, \
     VNFCInstModel, VmInstModel, FlavourInstModel, SubNetworkInstModel, CPInstModel
-from res.resources.serializers import VolumeInfoSerializer, NoneSerializer
+from res.resources.serializers import VolumeInfoSerializer, NoneSerializer, CpsInfoSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -310,22 +310,31 @@ def fill_subnets_data(subnet):
     return subnets_data
 
 
-@api_view(http_method_names=['GET'])
-def get_cps(request, *args, **kwargs):
-    logger.debug("Query all the cps by vnfInstanceId[%s]", fun_name())
-    try:
-        vnf_inst_id = ignore_case_get(kwargs, "vnfInstanceId")
-        cps = CPInstModel.objects.filter(ownerid=vnf_inst_id)
-        if not cps:
-            return Response(data={'error': 'Cps does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        arr = []
-        for cp in cps:
-            arr.append(fill_cps_data(cp))
-        return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except Exception as e:
-        logger.error(e.message)
-        logger.error(traceback.format_exc())
-        return Response(data={'error': 'Failed to get cps'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class getCps(APIView):
+    @swagger_auto_schema(request_body=NoneSerializer(),
+                         responses={
+                             status.HTTP_200_OK: CpsInfoSerializer(),
+                             status.HTTP_404_NOT_FOUND: 'Cps does not exist',
+                             status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+    def get(self, request, vnfInstanceId):
+        logger.debug("Query all the cps by vnfInstanceId[%s]", fun_name())
+        try:
+            cps = CPInstModel.objects.filter(ownerid=vnfInstanceId)
+            if not cps:
+                return Response(data={'error': 'Cps does not exist'}, status=status.HTTP_404_NOT_FOUND)
+            arr = []
+            for cp in cps:
+                arr.append(fill_cps_data(cp))
+            cpInfoSerializer = CpsInfoSerializer(data={'resp_data': arr})
+            isValid = cpInfoSerializer.is_valid()
+            if not isValid:
+                raise Exception(cpInfoSerializer.errors)
+
+            return Response(data=cpInfoSerializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(e.message)
+            logger.error(traceback.format_exc())
+            return Response(data={'error': 'Failed to get cps'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_cps_data(cp):
