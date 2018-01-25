@@ -37,6 +37,7 @@ SchemaView = get_schema_view(
 
 urlpatterns = [
     url(r'^', include('res.samples.urls')),
+    url(r'^', include('res.swagger.urls')),
     url(r'^', include('res.resources.urls')),
     url(r'^swagger(?P<format>.json|.yaml)$', SchemaView.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', SchemaView.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

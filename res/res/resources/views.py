@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 import logging
-import os
 import traceback
 
 from drf_yasg.utils import swagger_auto_schema
@@ -23,11 +21,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from res.pub.exceptions import VNFRESException
-from res.pub.utils.values import ignore_case_get
-from res.pub.utils.syscomm import fun_name
 from res.pub.database.models import NfInstModel, StorageInstModel, NetworkInstModel, VLInstModel, \
     VNFCInstModel, VmInstModel, FlavourInstModel, SubNetworkInstModel, CPInstModel
+from res.pub.exceptions import VNFRESException
+from res.pub.utils.syscomm import fun_name
+from res.pub.utils.values import ignore_case_get
 from res.resources.serializers import VolumeInfoSerializer, NoneSerializer, CpsInfoSerializer
 
 logger = logging.getLogger(__name__)
@@ -388,12 +386,3 @@ def fill_volumes_data(v):
         "size": v.size
     }
     return volumes_data
-
-
-class SwaggerJsonView(APIView):
-    def get(self, request):
-        json_file = os.path.join(os.path.dirname(__file__), 'swagger.json')
-        f = open(json_file)
-        json_data = json.JSONDecoder().decode(f.read())
-        f.close()
-        return Response(json_data)
