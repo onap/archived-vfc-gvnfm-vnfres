@@ -26,7 +26,7 @@ from res.pub.database.models import NfInstModel, StorageInstModel, NetworkInstMo
 from res.pub.exceptions import VNFRESException
 from res.pub.utils.syscomm import fun_name
 from res.pub.utils.values import ignore_case_get
-from res.resources.serializers import VolumeInfoSerializer, NoneSerializer, CpsInfoSerializer
+from res.resources.serializers import VolumeInfoSerializer, CpsInfoSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -309,11 +309,11 @@ def fill_subnets_data(subnet):
 
 
 class getCps(APIView):
-    @swagger_auto_schema(request_body=NoneSerializer(),
-                         responses={
-                             status.HTTP_200_OK: CpsInfoSerializer(),
-                             status.HTTP_404_NOT_FOUND: 'Cps does not exist',
-                             status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_200_OK: CpsInfoSerializer(),
+            status.HTTP_404_NOT_FOUND: 'Cps does not exist',
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
     def get(self, request, vnfInstanceId):
         logger.debug("Query all the cps by vnfInstanceId[%s]", fun_name())
         try:
@@ -349,11 +349,11 @@ def fill_cps_data(cp):
 
 
 class getVolumes(APIView):
-    @swagger_auto_schema(request_body=NoneSerializer(),
-                         responses={
-                             status.HTTP_200_OK: VolumeInfoSerializer(),
-                             status.HTTP_404_NOT_FOUND: 'Volumes does not exist',
-                             status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_200_OK: VolumeInfoSerializer(),
+            status.HTTP_404_NOT_FOUND: 'Volumes does not exist',
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
     def get(self, request, vnfInstanceId):
         logger.debug("Query all the volumes by vnfInstanceId[%s]", fun_name())
         try:
