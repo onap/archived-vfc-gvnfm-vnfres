@@ -25,5 +25,5 @@ class SwaggerViewTest(unittest.TestCase):
         pass
 
     def test_swagger_ok(self):
-        resp = self.client.get("/api/vnfres/v1/swagger.json", format="json")
+        resp = self.client.get("/swagger.json", format="json")
         self.assertEqual(resp.status_code, status.HTTP_200_OK, resp.content)
