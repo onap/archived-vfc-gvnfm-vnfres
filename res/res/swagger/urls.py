@@ -12,9 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from django.conf.urls import url
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
 
-from res.swagger.views import SwaggerJsonView
+swagger_info = openapi.Info(
+    title="vnfres API",
+    default_version='v1',
+    description="""
+
+The `swagger-ui` view can be found [here](/cached/swagger).
+The `ReDoc` view can be found [here](/cached/redoc).
+The swagger YAML document can be found [here](/cached/swagger.yaml)."""
+)
+
+SchemaView = get_schema_view(
+    validators=['ssv', 'flex'],
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
-    url(r'^api/vnfres/v1/swagger.json$', SwaggerJsonView.as_view()),
+    # url(r'^api/vnfres/v1/swagger.json$', SwaggerJsonView.as_view()),
+    url(r'^swagger(?P<format>.json|.yaml)$', SchemaView.without_ui(cache_timeout=0), name='schema-json'),
+    url(r'^swagger/$', SchemaView.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    url(r'^redoc/$', SchemaView.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    url(r'^cached/swagger(?P<format>.json|.yaml)$', SchemaView.without_ui(cache_timeout=None), name='cschema-json'),
+    url(r'^cached/swagger/$', SchemaView.with_ui('swagger', cache_timeout=None), name='cschema-swagger-ui'),
+    url(r'^cached/redoc/$', SchemaView.with_ui('redoc', cache_timeout=None), name='cschema-redoc'),
 ]
