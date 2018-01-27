@@ -26,7 +26,7 @@ from res.pub.database.models import NfInstModel, StorageInstModel, NetworkInstMo
 from res.pub.exceptions import VNFRESException
 from res.pub.utils.syscomm import fun_name
 from res.pub.utils.values import ignore_case_get
-from res.resources.serializers import VolumeInfoSerializer, CpsInfoSerializer
+from res.resources.serializers import VolumeInfoSerializer, CpsInfoSerializer, SubnetInfoSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -276,22 +276,31 @@ def fill_networks_data(network):
     return networks_data
 
 
-@api_view(http_method_names=['GET'])
-def get_subnets(request, *args, **kwargs):
-    logger.debug("Query all the subnets by vnfInstanceId[%s]", fun_name())
-    try:
-        vnf_inst_id = ignore_case_get(kwargs, "vnfInstanceId")
-        subnets = SubNetworkInstModel.objects.filter(instid=vnf_inst_id)
-        if not subnets:
-            return Response(data={'error': 'Subnets does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        arr = []
-        for subnet in subnets:
-            arr.append(fill_subnets_data(subnet))
-        return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except Exception as e:
-        logger.error(e.message)
-        logger.error(traceback.format_exc())
-        return Response(data={'error': 'Failed to get subnets'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class getSubnets(APIView):
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_200_OK: SubnetInfoSerializer(),
+            status.HTTP_404_NOT_FOUND: 'Subnets does not exist',
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+    def get(self, request, vnfInstanceId):
+        logger.debug("Query all the subnets by vnfInstanceId[%s]", fun_name())
+        try:
+            subnets = SubNetworkInstModel.objects.filter(instid=vnfInstanceId)
+            if not subnets:
+                return Response(data={'error': 'Subnets does not exist'}, status=status.HTTP_404_NOT_FOUND)
+            arr = []
+            for subnet in subnets:
+                arr.append(fill_subnets_data(subnet))
+            subnetInfoSerializer = SubnetInfoSerializer(data={'resp_data': arr})
+            isValid = subnetInfoSerializer.is_valid()
+            if not isValid:
+                raise Exception(subnetInfoSerializer.errors)
+
+            return Response(data=subnetInfoSerializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(e.message)
+            logger.error(traceback.format_exc())
+            return Response(data={'error': 'Failed to get subnets'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_subnets_data(subnet):
