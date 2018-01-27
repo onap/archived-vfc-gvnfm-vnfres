@@ -15,7 +15,22 @@
 from rest_framework import serializers
 
 
-class CpsResponseSerializer(serializers.Serializer):
+class SubnetResponseSerializer(serializers.Serializer):
+    subnetworkid = serializers.CharField(help_text="the subnetwork id", required=True)
+    vimid = serializers.CharField(help_text="the vim id", required=True)
+    resouceid = serializers.CharField(help_text="the resouce id", required=True)
+    networkid = serializers.CharField(help_text="the network id", required=True)
+    insttype = serializers.IntegerField(help_text="the inst type", required=True)
+    instid = serializers.CharField(help_text="the inst id", required=True)
+    name = serializers.CharField(help_text="name", required=True)
+    cidr = serializers.CharField(help_text="cidr", required=True)
+
+
+class SubnetInfoSerializer(serializers.Serializer):
+    resp_data = SubnetResponseSerializer(help_text="the response data", many=True)
+
+
+class CpResponseSerializer(serializers.Serializer):
     cpinstanceid = serializers.CharField(help_text="the cp instance id", required=True)
     cpdid = serializers.CharField(help_text="the cpd id", required=True)
     cpinstancename = serializers.CharField(help_text="the cp instance name of vnf", required=True)
@@ -26,7 +41,7 @@ class CpsResponseSerializer(serializers.Serializer):
 
 
 class CpsInfoSerializer(serializers.Serializer):
-    resp_data = CpsResponseSerializer(help_text="the response data", many=True)
+    resp_data = CpResponseSerializer(help_text="the response data", many=True)
 
 
 class VolumeResponseSerializer(serializers.Serializer):
