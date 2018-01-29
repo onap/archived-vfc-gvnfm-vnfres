@@ -26,7 +26,8 @@ from res.pub.database.models import NfInstModel, StorageInstModel, NetworkInstMo
 from res.pub.exceptions import VNFRESException
 from res.pub.utils.syscomm import fun_name
 from res.pub.utils.values import ignore_case_get
-from res.resources.serializers import VolumeInfoSerializer, CpsInfoSerializer, SubnetInfoSerializer
+from res.resources.serializers import VolumeInfoSerializer, CpsInfoSerializer, SubnetInfoSerializer, \
+    NetworkInfoSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -246,22 +247,32 @@ def fill_flavours_data(f):
     return flavours_data
 
 
-@api_view(http_method_names=['GET'])
-def get_networks(request, *args, **kwargs):
-    logger.debug("Query all the networks by vnfInstanceId[%s]", fun_name())
-    try:
-        vnf_inst_id = ignore_case_get(kwargs, "vnfInstanceId")
-        networks = NetworkInstModel.objects.filter(instid=vnf_inst_id)
-        if not networks:
-            return Response(data={'error': 'Networks does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        arr = []
-        for network in networks:
-            arr.append(fill_networks_data(network))
-        return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except Exception as e:
-        logger.error(e.message)
-        logger.error(traceback.format_exc())
-        return Response(data={'error': 'Failed to get networks'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class getNetworks(APIView):
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_200_OK: NetworkInfoSerializer(),
+            status.HTTP_404_NOT_FOUND: 'Networks does not exist',
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+    def get(self, request, vnfInstanceId):
+        logger.debug("Query all the networks by vnfInstanceId[%s]", fun_name())
+        try:
+            networks = NetworkInstModel.objects.filter(instid=vnfInstanceId)
+            if not networks:
+                return Response(data={'error': 'Networks does not exist'}, status=status.HTTP_404_NOT_FOUND)
+            arr = []
+            for network in networks:
+                arr.append(fill_networks_data(network))
+
+            networkInfoSerializer = NetworkInfoSerializer(data={'resp_data': arr})
+            isValid = networkInfoSerializer.is_valid()
+            if not isValid:
+                raise Exception(networkInfoSerializer.errors)
+
+            return Response(data=networkInfoSerializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(e.message)
+            logger.error(traceback.format_exc())
+            return Response(data={'error': 'Failed to get networks'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_networks_data(network):
