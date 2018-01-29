@@ -15,6 +15,23 @@
 from rest_framework import serializers
 
 
+class FlavorResponseSerializer(serializers.Serializer):
+    flavourid = serializers.CharField(help_text="flavourid", required=True)
+    vimid = serializers.CharField(help_text="the vim id", required=True)
+    resouceid = serializers.CharField(help_text="the resouce id", required=True)
+    tenant = serializers.IntegerField(help_text="tenant", required=True)
+    instid = serializers.CharField(help_text="the inst id", required=True)
+    name = serializers.CharField(help_text="name", required=True)
+    extraspecs = serializers.CharField(help_text="extraspecs", required=True)
+    create_time = serializers.CharField(help_text="create_time", required=True)
+    memory = serializers.IntegerField(help_text="memory", required=True)
+    vcpu = serializers.CharField(help_text="vcpu", required=True)
+
+
+class FlavorInfoSerializer(serializers.Serializer):
+    resp_data = FlavorResponseSerializer(help_text="the response data", many=True)
+
+
 class NetworkResponseSerializer(serializers.Serializer):
     networkid = serializers.CharField(help_text="networkid", required=True)
     vimid = serializers.CharField(help_text="the vim id", required=True)
