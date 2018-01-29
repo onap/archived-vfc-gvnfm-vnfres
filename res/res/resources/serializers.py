@@ -15,6 +15,29 @@
 from rest_framework import serializers
 
 
+class VmResponseSerializer(serializers.Serializer):
+    vmid = serializers.CharField(help_text="vmid", required=True)
+    vimid = serializers.CharField(help_text="the vim id", required=True)
+    resouceid = serializers.CharField(help_text="the resouce id", required=True)
+    tenant = serializers.IntegerField(help_text="tenant", required=True, allow_null=True)
+    instid = serializers.CharField(help_text="the inst id", required=True)
+    vmname = serializers.CharField(help_text="vmname", required=True)
+    insttype = serializers.IntegerField(help_text="insttype", required=True)
+    operationalstate = serializers.CharField(help_text="operationalstate", required=True, allow_null=True)
+    is_predefined = serializers.IntegerField(help_text="is_predefined", required=True)
+    security_groups = serializers.CharField(help_text="security_groups", required=True)
+    flavor_id = serializers.CharField(help_text="flavor_id", required=True)
+    availability_zone = serializers.CharField(help_text="availability_zone", required=True)
+    server_group = serializers.CharField(help_text="server_group", required=True)
+    volume_array = serializers.CharField(help_text="volume_array", required=True)
+    metadata = serializers.CharField(help_text="metadata", required=True)
+    nic_array = serializers.CharField(help_text="nic_array", required=True)
+
+
+class VmInfoSerializer(serializers.Serializer):
+    resp_data = VmResponseSerializer(help_text="the response data", many=True)
+
+
 class FlavorResponseSerializer(serializers.Serializer):
     flavourid = serializers.CharField(help_text="flavourid", required=True)
     vimid = serializers.CharField(help_text="the vim id", required=True)
