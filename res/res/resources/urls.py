@@ -20,7 +20,7 @@ from res.resources import views
 urlpatterns = [
     url(r'^api/vnfres/v1/vnfs/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)$', views.get_vnf, name='get_vnf'),
     url(r'^api/vnfres/v1/vnfs$', views.get_vnfs, name='get_vnfs'),
-    url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/vms$', views.get_vms, name='get_vms'),
+    url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/vms$', views.getVms.as_view(), name='get_vms'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/flavors$', views.getFlavors.as_view(), name='get_flavors'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/networks$', views.getNetworks.as_view(), name='get_networks'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/subnets$', views.getSubnets.as_view(), name='get_subnets'),

@@ -27,7 +27,7 @@ from res.pub.exceptions import VNFRESException
 from res.pub.utils.syscomm import fun_name
 from res.pub.utils.values import ignore_case_get
 from res.resources.serializers import VolumeInfoSerializer, CpsInfoSerializer, SubnetInfoSerializer, \
-    NetworkInfoSerializer, FlavorInfoSerializer
+    NetworkInfoSerializer, FlavorInfoSerializer, VmInfoSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -173,22 +173,32 @@ def get_vnfs(request):
         return Response(data={'error': 'Failed to get Vnfs'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(http_method_names=['GET'])
-def get_vms(request, *args, **kwargs):
-    logger.debug("Query all the vms by vnfInstanceId[%s]", fun_name())
-    try:
-        vnf_inst_id = ignore_case_get(kwargs, "vnfInstanceId")
-        vms = VmInstModel.objects.filter(instid=vnf_inst_id)
-        if not vms:
-            return Response(data={'error': 'Vms does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        arr = []
-        for vm in vms:
-            arr.append(fill_vms_data(vm))
-        return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except Exception as e:
-        logger.error(e.message)
-        logger.error(traceback.format_exc())
-        return Response(data={'error': 'Failed to get Vms'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class getVms(APIView):
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_200_OK: VmInfoSerializer(),
+            status.HTTP_404_NOT_FOUND: 'Vms does not exist',
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+    def get(self, request, vnfInstanceId):
+        logger.debug("Query all the vms by vnfInstanceId[%s]", fun_name())
+        try:
+            vms = VmInstModel.objects.filter(instid=vnfInstanceId)
+            if not vms:
+                return Response(data={'error': 'Vms does not exist'}, status=status.HTTP_404_NOT_FOUND)
+            arr = []
+            for vm in vms:
+                arr.append(fill_vms_data(vm))
+
+            vmInfoSerializer = VmInfoSerializer(data={'resp_data': arr})
+            isValid = vmInfoSerializer.is_valid()
+            if not isValid:
+                raise Exception(vmInfoSerializer.errors)
+
+            return Response(data=vmInfoSerializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(e.message)
+            logger.error(traceback.format_exc())
+            return Response(data={'error': 'Failed to get Vms'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_vms_data(vm):
