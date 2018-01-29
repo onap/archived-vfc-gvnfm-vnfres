@@ -15,6 +15,19 @@
 from rest_framework import serializers
 
 
+class NetworkResponseSerializer(serializers.Serializer):
+    networkid = serializers.CharField(help_text="networkid", required=True)
+    vimid = serializers.CharField(help_text="the vim id", required=True)
+    resouceid = serializers.CharField(help_text="the resouce id", required=True)
+    insttype = serializers.IntegerField(help_text="the inst type", required=True)
+    instid = serializers.CharField(help_text="the inst id", required=True)
+    name = serializers.CharField(help_text="name", required=True)
+
+
+class NetworkInfoSerializer(serializers.Serializer):
+    resp_data = NetworkResponseSerializer(help_text="the response data", many=True)
+
+
 class SubnetResponseSerializer(serializers.Serializer):
     subnetworkid = serializers.CharField(help_text="the subnetwork id", required=True)
     vimid = serializers.CharField(help_text="the vim id", required=True)
