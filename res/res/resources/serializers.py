@@ -15,7 +15,7 @@
 from rest_framework import serializers
 
 
-class StorageResourceSerializer(serializers.Serializer):
+class ResourceSerializer(serializers.Serializer):
     resourceId = serializers.CharField(help_text="resourceId", required=True)
     vimId = serializers.CharField(help_text="vimId", required=True)
 
@@ -23,15 +23,20 @@ class StorageResourceSerializer(serializers.Serializer):
 class virtualStorageResourceInfoSerializer(serializers.Serializer):
     virtualStorageInstanceId = serializers.CharField(help_text="virtualStorageInstanceId", required=True)
     virtualStorageDescId = serializers.CharField(help_text="virtualStorageDescId", required=True, allow_null=True)
-    storageResource = StorageResourceSerializer(help_text="storageResource", required=True)
+    storageResource = ResourceSerializer(help_text="storageResource", required=True)
 
 
 class virtualLinkResourceInfoSerializer(serializers.Serializer):
-    pass
+    virtualLinkInstanceId = serializers.IntegerField(help_text="virtualLinkInstanceId", required=True, allow_null=True)
+    virtualLinkDescId = serializers.IntegerField(help_text="virtualLinkDescId", required=True, allow_null=True)
+    networkResource = ResourceSerializer(help_text="networkResource", required=True, allow_null=True)
 
 
 class vnfcResourceInfoSerializer(serializers.Serializer):
-    pass
+    vnfcInstanceId = serializers.IntegerField(help_text="vnfcInstanceId", required=True, allow_null=True)
+    vduId = serializers.IntegerField(help_text="vduId", required=True, allow_null=True)
+    storageResourceIds = serializers.IntegerField(help_text="storageResourceIds", required=True, allow_null=True)
+    computeResource = ResourceSerializer(help_text="computeResource", required=True, allow_null=True)
 
 
 class accessInfoSerializer(serializers.Serializer):
@@ -47,22 +52,24 @@ class InterfaceInfoSerializer(serializers.Serializer):
 
 
 class VmResponseSerializer(serializers.Serializer):
-    vmid = serializers.CharField(help_text="vmid", required=True)
-    vimid = serializers.CharField(help_text="the vim id", required=True)
-    resouceid = serializers.CharField(help_text="the resouce id", required=True)
+    vmid = serializers.CharField(help_text="vmid", required=True, allow_null=True)
+    vimid = serializers.CharField(help_text="the vim id", required=True, allow_null=True)
+    resouceid = serializers.CharField(help_text="the resouce id", required=True, allow_null=True)
     tenant = serializers.CharField(help_text="tenant", required=True, allow_null=True)
-    instid = serializers.CharField(help_text="the inst id", required=True)
-    vmname = serializers.CharField(help_text="vmname", required=True)
-    insttype = serializers.IntegerField(help_text="insttype", required=True)
+    instid = serializers.CharField(help_text="the inst id", required=True, allow_null=True)
+    vmname = serializers.CharField(help_text="vmname", required=True, allow_null=True)
+    insttype = serializers.IntegerField(help_text="insttype", required=True, allow_null=True)
     operationalstate = serializers.CharField(help_text="operationalstate", required=True, allow_null=True)
-    is_predefined = serializers.IntegerField(help_text="is_predefined", required=True)
-    security_groups = serializers.CharField(help_text="security_groups", required=True)
-    flavor_id = serializers.CharField(help_text="flavor_id", required=True)
-    availability_zone = serializers.CharField(help_text="availability_zone", required=True)
-    server_group = serializers.CharField(help_text="server_group", required=True)
-    volume_array = serializers.CharField(help_text="volume_array", required=True)
-    metadata = serializers.CharField(help_text="metadata", required=True)
-    nic_array = serializers.CharField(help_text="nic_array", required=True)
+    is_predefined = serializers.IntegerField(help_text="is_predefined", required=True, allow_null=True)
+    security_groups = serializers.CharField(help_text="security_groups", required=True, allow_null=True)
+    flavor_id = serializers.CharField(help_text="flavor_id", required=True, allow_null=True)
+    availability_zone = serializers.CharField(help_text="availability_zone", required=True, allow_null=True)
+    server_group = serializers.CharField(help_text="server_group", required=True, allow_null=True)
+    volume_array = serializers.CharField(help_text="volume_array", required=True, allow_null=True)
+    metadata = serializers.CharField(help_text="metadata", required=True, allow_null=True)
+    nic_array = serializers.CharField(help_text="nic_array", required=True, allow_null=True)
+    create_time = serializers.CharField(help_text="create_time", required=False, allow_null=True)
+    nodeId = serializers.CharField(help_text="nodeId", required=False, allow_null=True)
 
 
 class vimInfoSerializer(serializers.Serializer):
@@ -138,8 +145,7 @@ class VnfInfoSerializer(serializers.Serializer):
     vnfInstanceId = serializers.CharField(help_text="vnf Instance Id", required=True)
     vnfInstanceName = serializers.CharField(help_text="vnf Instance Name", required=True)
     vnfInstanceDescription = serializers.CharField(help_text="vnfInstanceDescription", required=True, allow_null=True)
-    onboardedVnfPkgInfoId = serializers.CharField(help_text="onboarded Vnf Pkg Info Id", required=False,
-                                                  allow_null=True)
+    onboardedVnfPkgInfoId = serializers.CharField(help_text="onboarded Vnf Pkg Info Id", required=False, allow_null=True)
     vnfdId = serializers.CharField(help_text="vnfdId", required=True, allow_null=True)
     vnfdVersion = serializers.CharField(help_text="vnfd Version", required=False, allow_null=True)
     vnfSoftwareVersion = serializers.CharField(help_text="vnfSoftwareVersion", required=True, allow_null=True)
