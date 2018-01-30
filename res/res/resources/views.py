@@ -44,7 +44,13 @@ class getVnfs(APIView):
             if not vnf_inst:
                 return Response(data={'error': 'Vnf(%s) does not exist' % vnfInstanceId}, status=status.HTTP_404_NOT_FOUND)
             resp_data = fill_resp_data(vnf_inst[0])
-            return Response(data=resp_data, status=status.HTTP_200_OK)
+
+            vnfInfoSerializer = VnfInfoSerializer(data=resp_data)
+            isValid = vnfInfoSerializer.is_valid()
+            if not isValid:
+                raise Exception(vnfInfoSerializer.errors)
+
+            return Response(data=vnfInfoSerializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
