@@ -156,6 +156,10 @@ class VnfInfoSerializer(serializers.Serializer):
     instantiatedVnfInfo = instantiatedVnfInfoSerializer(help_text="instantiatedVnfInfo", required=True)
 
 
+class VnfsInfoSerializer(serializers.Serializer):
+    resp_data = VnfInfoSerializer(help_text="the response data", many=True)
+
+
 class VmInfoSerializer(serializers.Serializer):
     resp_data = VmResponseSerializer(help_text="the response data", many=True)
 

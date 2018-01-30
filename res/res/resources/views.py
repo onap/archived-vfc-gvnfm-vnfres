@@ -17,7 +17,6 @@ import traceback
 
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -26,12 +25,12 @@ from res.pub.database.models import NfInstModel, StorageInstModel, NetworkInstMo
 from res.pub.exceptions import VNFRESException
 from res.pub.utils.syscomm import fun_name
 from res.resources.serializers import VolumeInfoSerializer, CpsInfoSerializer, SubnetInfoSerializer, \
-    NetworkInfoSerializer, FlavorInfoSerializer, VmInfoSerializer, VnfInfoSerializer
+    NetworkInfoSerializer, FlavorInfoSerializer, VmInfoSerializer, VnfInfoSerializer, VnfsInfoSerializer
 
 logger = logging.getLogger(__name__)
 
 
-class getVnfs(APIView):
+class getVnf(APIView):
     @swagger_auto_schema(
         responses={
             status.HTTP_200_OK: VnfInfoSerializer(),
@@ -165,21 +164,32 @@ def fill_resp_data(vnf):
     return resp_data
 
 
-@api_view(http_method_names=['GET'])
-def get_vnfs(request):
-    logger.debug("Query all the vnfs[%s]", fun_name())
-    try:
-        vnf_insts = NfInstModel.objects.all()
-        if not vnf_insts:
-            return Response(data={'error': 'Vnfs does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        arr = []
-        for vnf_inst in vnf_insts:
-            arr.append(fill_resp_data(vnf_inst))
-        return Response(data={'resp_data': arr}, status=status.HTTP_200_OK)
-    except Exception as e:
-        logger.error(e.message)
-        logger.error(traceback.format_exc())
-        return Response(data={'error': 'Failed to get Vnfs'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class getVnfs(APIView):
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_200_OK: VnfsInfoSerializer(),
+            status.HTTP_404_NOT_FOUND: 'Vnfs does not exist',
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+    def get(self, request):
+        logger.debug("Query all the vnfs[%s]", fun_name())
+        try:
+            vnf_insts = NfInstModel.objects.all()
+            if not vnf_insts:
+                return Response(data={'error': 'Vnfs does not exist'}, status=status.HTTP_404_NOT_FOUND)
+            arr = []
+            for vnf_inst in vnf_insts:
+                arr.append(fill_resp_data(vnf_inst))
+
+            vnfsInfoSerializer = VnfsInfoSerializer(data={'resp_data': arr})
+            isValid = vnfsInfoSerializer.is_valid()
+            if not isValid:
+                raise Exception(vnfsInfoSerializer.errors)
+
+            return Response(data=vnfsInfoSerializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(e.message)
+            logger.error(traceback.format_exc())
+            return Response(data={'error': 'Failed to get Vnfs'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class getVms(APIView):
