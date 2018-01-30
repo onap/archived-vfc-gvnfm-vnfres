@@ -27,25 +27,29 @@ from res.pub.exceptions import VNFRESException
 from res.pub.utils.syscomm import fun_name
 from res.pub.utils.values import ignore_case_get
 from res.resources.serializers import VolumeInfoSerializer, CpsInfoSerializer, SubnetInfoSerializer, \
-    NetworkInfoSerializer, FlavorInfoSerializer, VmInfoSerializer
+    NetworkInfoSerializer, FlavorInfoSerializer, VmInfoSerializer, VnfInfoSerializer
 
 logger = logging.getLogger(__name__)
 
 
-@api_view(http_method_names=['GET'])
-def get_vnf(request, *args, **kwargs):
-    vnf_inst_id = ignore_case_get(kwargs, "vnfInstanceId")
-    logger.debug("[%s]vnf_inst_id=%s", fun_name(), vnf_inst_id)
-    try:
-        vnf_inst = NfInstModel.objects.filter(nfinstid=vnf_inst_id)
-        if not vnf_inst:
-            return Response(data={'error': 'Vnf(%s) does not exist' % vnf_inst_id}, status=status.HTTP_404_NOT_FOUND)
-        resp_data = fill_resp_data(vnf_inst[0])
-        return Response(data=resp_data, status=status.HTTP_200_OK)
-    except Exception as e:
-        logger.error(e.message)
-        logger.error(traceback.format_exc())
-        return Response(data={'error': 'Failed to get Vnf(%s)' % vnf_inst_id}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class getVnfs(APIView):
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_200_OK: VnfInfoSerializer(),
+            status.HTTP_404_NOT_FOUND: 'Vnf does not exist',
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+    def get(self, request, vnfInstanceId):
+        logger.debug("[%s]vnf_inst_id=%s", fun_name(), vnfInstanceId)
+        try:
+            vnf_inst = NfInstModel.objects.filter(nfinstid=vnfInstanceId)
+            if not vnf_inst:
+                return Response(data={'error': 'Vnf(%s) does not exist' % vnfInstanceId}, status=status.HTTP_404_NOT_FOUND)
+            resp_data = fill_resp_data(vnf_inst[0])
+            return Response(data=resp_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(e.message)
+            logger.error(traceback.format_exc())
+            return Response(data={'error': 'Failed to get Vnf(%s)' % vnfInstanceId}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_resp_data(vnf):
