@@ -135,7 +135,7 @@ def fill_resp_data(vnf):
         "vnfSoftwareVersion": vnf.vnfSoftwareVersion,
         "vnfProvider": vnf.vendor,
         "vnfProductName": vnf.netype,
-        "vnfConfigurableProperties": {vnf.vnfConfigurableProperties},
+        "vnfConfigurableProperties": vnf.vnfConfigurableProperties,
         "instantiationState": vnf.status,
         "instantiatedVnfInfo": {
             "flavourId": vnf.flavour_id,

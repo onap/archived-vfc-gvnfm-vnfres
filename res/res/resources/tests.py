@@ -34,7 +34,7 @@ class ResourceTest(TestCase):
             "vnfSoftwareVersion": None,
             "vnfProvider": None,
             "vnfProductName": None,
-            "vnfConfigurableProperties": {None},
+            "vnfConfigurableProperties": None,
             "instantiationState": None,
             "instantiatedVnfInfo": {
                 "flavourId": None,
