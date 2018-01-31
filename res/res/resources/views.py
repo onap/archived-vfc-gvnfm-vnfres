@@ -44,12 +44,12 @@ class getVnf(APIView):
                 return Response(data={'error': 'Vnf(%s) does not exist' % vnfInstanceId}, status=status.HTTP_404_NOT_FOUND)
             resp_data = fill_resp_data(vnf_inst[0])
 
-            vnfInfoSerializer = VnfInfoSerializer(data=resp_data)
-            isValid = vnfInfoSerializer.is_valid()
-            if not isValid:
-                raise Exception(vnfInfoSerializer.errors)
+            vnf_info_serializer = VnfInfoSerializer(data=resp_data)
+            resp_isvalid = vnf_info_serializer.is_valid()
+            if not resp_isvalid:
+                raise Exception(vnf_info_serializer.errors)
 
-            return Response(data=vnfInfoSerializer.data, status=status.HTTP_200_OK)
+            return Response(data=vnf_info_serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
@@ -180,12 +180,12 @@ class getVnfs(APIView):
             for vnf_inst in vnf_insts:
                 arr.append(fill_resp_data(vnf_inst))
 
-            vnfsInfoSerializer = VnfsInfoSerializer(data={'resp_data': arr})
-            isValid = vnfsInfoSerializer.is_valid()
-            if not isValid:
-                raise Exception(vnfsInfoSerializer.errors)
+            vnfs_info_serializer = VnfsInfoSerializer(data={'resp_data': arr})
+            resp_isvalid = vnfs_info_serializer.is_valid()
+            if not resp_isvalid:
+                raise Exception(vnfs_info_serializer.errors)
 
-            return Response(data=vnfsInfoSerializer.data, status=status.HTTP_200_OK)
+            return Response(data=vnfs_info_serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
@@ -208,12 +208,12 @@ class getVms(APIView):
             for vm in vms:
                 arr.append(fill_vms_data(vm))
 
-            vmInfoSerializer = VmInfoSerializer(data={'resp_data': arr})
-            isValid = vmInfoSerializer.is_valid()
-            if not isValid:
-                raise Exception(vmInfoSerializer.errors)
+            vm_info_serializer = VmInfoSerializer(data={'resp_data': arr})
+            resp_isvalid = vm_info_serializer.is_valid()
+            if not resp_isvalid:
+                raise Exception(vm_info_serializer.errors)
 
-            return Response(data=vmInfoSerializer.data, status=status.HTTP_200_OK)
+            return Response(data=vm_info_serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
@@ -258,12 +258,12 @@ class getFlavors(APIView):
             for flavour in flavours:
                 arr.append(fill_flavours_data(flavour))
 
-            flavorInfoSerializer = FlavorInfoSerializer(data={'resp_data': arr})
-            isValid = flavorInfoSerializer.is_valid()
-            if not isValid:
-                raise Exception(flavorInfoSerializer.errors)
+            flavor_info_serializer = FlavorInfoSerializer(data={'resp_data': arr})
+            resp_isvalid = flavor_info_serializer.is_valid()
+            if not resp_isvalid:
+                raise Exception(flavor_info_serializer.errors)
 
-            return Response(data=flavorInfoSerializer.data, status=status.HTTP_200_OK)
+            return Response(data=flavor_info_serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
@@ -302,12 +302,12 @@ class getNetworks(APIView):
             for network in networks:
                 arr.append(fill_networks_data(network))
 
-            networkInfoSerializer = NetworkInfoSerializer(data={'resp_data': arr})
-            isValid = networkInfoSerializer.is_valid()
-            if not isValid:
-                raise Exception(networkInfoSerializer.errors)
+            network_info_serializer = NetworkInfoSerializer(data={'resp_data': arr})
+            resp_isvalid = network_info_serializer.is_valid()
+            if not resp_isvalid:
+                raise Exception(network_info_serializer.errors)
 
-            return Response(data=networkInfoSerializer.data, status=status.HTTP_200_OK)
+            return Response(data=network_info_serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
@@ -341,12 +341,12 @@ class getSubnets(APIView):
             arr = []
             for subnet in subnets:
                 arr.append(fill_subnets_data(subnet))
-            subnetInfoSerializer = SubnetInfoSerializer(data={'resp_data': arr})
-            isValid = subnetInfoSerializer.is_valid()
-            if not isValid:
-                raise Exception(subnetInfoSerializer.errors)
+            subnet_info_serializer = SubnetInfoSerializer(data={'resp_data': arr})
+            resp_isvalid = subnet_info_serializer.is_valid()
+            if not resp_isvalid:
+                raise Exception(subnet_info_serializer.errors)
 
-            return Response(data=subnetInfoSerializer.data, status=status.HTTP_200_OK)
+            return Response(data=subnet_info_serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
@@ -382,12 +382,12 @@ class getCps(APIView):
             arr = []
             for cp in cps:
                 arr.append(fill_cps_data(cp))
-            cpInfoSerializer = CpsInfoSerializer(data={'resp_data': arr})
-            isValid = cpInfoSerializer.is_valid()
-            if not isValid:
-                raise Exception(cpInfoSerializer.errors)
+            cp_info_serializer = CpsInfoSerializer(data={'resp_data': arr})
+            resp_isvalid = cp_info_serializer.is_valid()
+            if not resp_isvalid:
+                raise Exception(cp_info_serializer.errors)
 
-            return Response(data=cpInfoSerializer.data, status=status.HTTP_200_OK)
+            return Response(data=cp_info_serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
@@ -422,12 +422,12 @@ class getVolumes(APIView):
             arr = []
             for v in volumes:
                 arr.append(fill_volumes_data(v))
-            volumeSerializer = VolumeInfoSerializer(data={'resp_data': arr})
-            isValid = volumeSerializer.is_valid()
-            if not isValid:
-                raise Exception(volumeSerializer.errors)
+            volume_serializer = VolumeInfoSerializer(data={'resp_data': arr})
+            resp_isvalid = volume_serializer.is_valid()
+            if not resp_isvalid:
+                raise Exception(volume_serializer.errors)
 
-            return Response(data=volumeSerializer.data, status=status.HTTP_200_OK)
+            return Response(data=volume_serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
