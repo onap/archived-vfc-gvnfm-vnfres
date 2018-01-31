@@ -16,57 +16,78 @@ from rest_framework import serializers
 
 
 class ResourceSerializer(serializers.Serializer):
-    resourceId = serializers.CharField(help_text="resourceId", required=True)
-    vimId = serializers.CharField(help_text="vimId", required=True)
+    resourceId = serializers.CharField(
+        help_text="resourceId",
+        required=True,
+        allow_null=True)
+    vimId = serializers.CharField(
+        help_text="vimId",
+        required=True,
+        allow_null=True)
 
 
 class VirtualStorageResourceInfoSerializer(serializers.Serializer):
     virtualStorageInstanceId = serializers.CharField(
-        help_text="virtualStorageInstanceId", required=True)
+        help_text="virtualStorageInstanceId", required=False, allow_null=True)
     virtualStorageDescId = serializers.CharField(
-        help_text="virtualStorageDescId", required=True, allow_null=True)
+        help_text="virtualStorageDescId", required=False, allow_null=True)
     storageResource = ResourceSerializer(
-        help_text="storageResource", required=True)
+        help_text="storageResource", required=False, allow_null=True)
 
 
 class VirtualLinkResourceInfoSerializer(serializers.Serializer):
     virtualLinkInstanceId = serializers.IntegerField(
-        help_text="virtualLinkInstanceId", required=True, allow_null=True)
+        help_text="virtualLinkInstanceId", required=False, allow_null=True)
     virtualLinkDescId = serializers.IntegerField(
-        help_text="virtualLinkDescId", required=True, allow_null=True)
+        help_text="virtualLinkDescId", required=False, allow_null=True)
     networkResource = ResourceSerializer(
         help_text="networkResource",
-        required=True,
+        required=False,
         allow_null=True)
 
 
 class VnfcResourceInfoSerializer(serializers.Serializer):
     vnfcInstanceId = serializers.IntegerField(
-        help_text="vnfcInstanceId", required=True, allow_null=True)
+        help_text="vnfcInstanceId", required=False, allow_null=True)
     vduId = serializers.IntegerField(
         help_text="vduId",
-        required=True,
+        required=False,
         allow_null=True)
     storageResourceIds = serializers.IntegerField(
-        help_text="storageResourceIds", required=True, allow_null=True)
+        help_text="storageResourceIds", required=False, allow_null=True)
     computeResource = ResourceSerializer(
         help_text="computeResource",
-        required=True,
+        required=False,
         allow_null=True)
 
 
 class AccessInfoSerializer(serializers.Serializer):
-    tenant = serializers.CharField(help_text="tenant", required=True)
-    username = serializers.CharField(help_text="username", required=True)
-    password = serializers.CharField(help_text="password", required=True)
+    tenant = serializers.CharField(
+        help_text="tenant",
+        required=False,
+        allow_null=True)
+    username = serializers.CharField(
+        help_text="username",
+        required=False,
+        allow_null=True)
+    password = serializers.CharField(
+        help_text="password",
+        required=False,
+        allow_null=True)
 
 
 class InterfaceInfoSerializer(serializers.Serializer):
-    vimType = serializers.CharField(help_text="vimType", required=True)
-    apiVersion = serializers.CharField(help_text="apiVersion", required=True)
+    vimType = serializers.CharField(
+        help_text="vimType",
+        required=False,
+        allow_null=True)
+    apiVersion = serializers.CharField(
+        help_text="apiVersion",
+        required=False,
+        allow_null=True)
     protocolType = serializers.ChoiceField(
         help_text="protocolType", choices=[
-            'http', 'https'], required=True)
+            'http', 'https'], required=False, allow_null=True)
 
 
 class VmResponseSerializer(serializers.Serializer):
