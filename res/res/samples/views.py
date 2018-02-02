@@ -14,6 +14,8 @@
 
 import logging
 
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -21,6 +23,9 @@ logger = logging.getLogger(__name__)
 
 
 class SampleList(APIView):
-    def get(self, request, format=None):
+    @swagger_auto_schema(
+        responses={
+            status.HTTP_200_OK: 'Successfully'})
+    def get(self, request):
         logger.debug("get")
         return Response({"status": "active"})
