@@ -41,7 +41,10 @@ class getVnf(APIView):
         try:
             vnf_inst = NfInstModel.objects.filter(nfinstid=vnfInstanceId)
             if not vnf_inst:
-                return Response(data={'error': 'Vnf(%s) does not exist' % vnfInstanceId}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    data={
+                        'error': 'Vnf(%s) does not exist' % vnfInstanceId},
+                    status=status.HTTP_404_NOT_FOUND)
             resp_data = fill_resp_data(vnf_inst[0])
 
             vnf_info_serializer = VnfInfoSerializer(data=resp_data)
@@ -49,11 +52,16 @@ class getVnf(APIView):
             if not resp_isvalid:
                 raise Exception(vnf_info_serializer.errors)
 
-            return Response(data=vnf_info_serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                data=vnf_info_serializer.data,
+                status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
-            return Response(data={'error': 'Failed to get Vnf(%s)' % vnfInstanceId}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                data={
+                    'error': 'Failed to get Vnf(%s)' % vnfInstanceId},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_resp_data(vnf):
@@ -76,7 +84,9 @@ def fill_resp_data(vnf):
     for v in vl_inst:
         net = NetworkInstModel.objects.filter(networkid=v.relatednetworkid)
         if not net:
-            raise VNFRESException('NetworkInst(%s) does not exist.' % v.relatednetworkid)
+            raise VNFRESException(
+                'NetworkInst(%s) does not exist.' %
+                v.relatednetworkid)
         v_dic = {
             "virtualLinkInstanceId": v.vlinstanceid,
             "virtualLinkDescId": v.vldid,
@@ -95,7 +105,9 @@ def fill_resp_data(vnf):
             raise VNFRESException('VmInst(%s) does not exist.' % vnfc.vmid)
         storage = StorageInstModel.objects.filter(ownerid=vm[0].vmid)
         if not storage:
-            raise VNFRESException('StorageInst(%s) does not exist.' % vm[0].vmid)
+            raise VNFRESException(
+                'StorageInst(%s) does not exist.' %
+                vm[0].vmid)
         vnfc_dic = {
             "vnfcInstanceId": vnfc.vnfcinstanceid,
             "vduId": vnfc.vduid,
@@ -109,7 +121,6 @@ def fill_resp_data(vnf):
     logger.info('Get the VimInstModel of list.')
     vms = VmInstModel.objects.filter(instid=vnf.nfinstid)
     vm_arr = []
-    # The 'vimInfoId' and 'vimId' each value are same
     for vm in vms:
         vm_dic = {
             "vmid": vm.vmid,
@@ -175,7 +186,10 @@ class getVnfs(APIView):
         try:
             vnf_insts = NfInstModel.objects.all()
             if not vnf_insts:
-                return Response(data={'error': 'Vnfs does not exist'}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    data={
+                        'error': 'Vnfs does not exist'},
+                    status=status.HTTP_404_NOT_FOUND)
             arr = []
             for vnf_inst in vnf_insts:
                 arr.append(fill_resp_data(vnf_inst))
@@ -185,11 +199,16 @@ class getVnfs(APIView):
             if not resp_isvalid:
                 raise Exception(vnfs_info_serializer.errors)
 
-            return Response(data=vnfs_info_serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                data=vnfs_info_serializer.data,
+                status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
-            return Response(data={'error': 'Failed to get Vnfs'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                data={
+                    'error': 'Failed to get Vnfs'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class getVms(APIView):
@@ -203,7 +222,10 @@ class getVms(APIView):
         try:
             vms = VmInstModel.objects.filter(instid=vnfInstanceId)
             if not vms:
-                return Response(data={'error': 'Vms does not exist'}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    data={
+                        'error': 'Vms does not exist'},
+                    status=status.HTTP_404_NOT_FOUND)
             arr = []
             for vm in vms:
                 arr.append(fill_vms_data(vm))
@@ -213,11 +235,16 @@ class getVms(APIView):
             if not resp_isvalid:
                 raise Exception(vm_info_serializer.errors)
 
-            return Response(data=vm_info_serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                data=vm_info_serializer.data,
+                status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
-            return Response(data={'error': 'Failed to get Vms'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                data={
+                    'error': 'Failed to get Vms'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_vms_data(vm):
@@ -253,21 +280,30 @@ class getFlavors(APIView):
         try:
             flavours = FlavourInstModel.objects.filter(instid=vnfInstanceId)
             if not flavours:
-                return Response(data={'error': 'Flavours does not exist'}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    data={
+                        'error': 'Flavours does not exist'},
+                    status=status.HTTP_404_NOT_FOUND)
             arr = []
             for flavour in flavours:
                 arr.append(fill_flavours_data(flavour))
 
-            flavor_info_serializer = FlavorInfoSerializer(data={'resp_data': arr})
+            flavor_info_serializer = FlavorInfoSerializer(
+                data={'resp_data': arr})
             resp_isvalid = flavor_info_serializer.is_valid()
             if not resp_isvalid:
                 raise Exception(flavor_info_serializer.errors)
 
-            return Response(data=flavor_info_serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                data=flavor_info_serializer.data,
+                status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
-            return Response(data={'error': 'Failed to get flavours'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                data={
+                    'error': 'Failed to get flavours'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_flavours_data(f):
@@ -297,21 +333,30 @@ class getNetworks(APIView):
         try:
             networks = NetworkInstModel.objects.filter(instid=vnfInstanceId)
             if not networks:
-                return Response(data={'error': 'Networks does not exist'}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    data={
+                        'error': 'Networks does not exist'},
+                    status=status.HTTP_404_NOT_FOUND)
             arr = []
             for network in networks:
                 arr.append(fill_networks_data(network))
 
-            network_info_serializer = NetworkInfoSerializer(data={'resp_data': arr})
+            network_info_serializer = NetworkInfoSerializer(
+                data={'resp_data': arr})
             resp_isvalid = network_info_serializer.is_valid()
             if not resp_isvalid:
                 raise Exception(network_info_serializer.errors)
 
-            return Response(data=network_info_serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                data=network_info_serializer.data,
+                status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
-            return Response(data={'error': 'Failed to get networks'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                data={
+                    'error': 'Failed to get networks'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_networks_data(network):
@@ -337,20 +382,29 @@ class getSubnets(APIView):
         try:
             subnets = SubNetworkInstModel.objects.filter(instid=vnfInstanceId)
             if not subnets:
-                return Response(data={'error': 'Subnets does not exist'}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    data={
+                        'error': 'Subnets does not exist'},
+                    status=status.HTTP_404_NOT_FOUND)
             arr = []
             for subnet in subnets:
                 arr.append(fill_subnets_data(subnet))
-            subnet_info_serializer = SubnetInfoSerializer(data={'resp_data': arr})
+            subnet_info_serializer = SubnetInfoSerializer(
+                data={'resp_data': arr})
             resp_isvalid = subnet_info_serializer.is_valid()
             if not resp_isvalid:
                 raise Exception(subnet_info_serializer.errors)
 
-            return Response(data=subnet_info_serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                data=subnet_info_serializer.data,
+                status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
-            return Response(data={'error': 'Failed to get subnets'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                data={
+                    'error': 'Failed to get subnets'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_subnets_data(subnet):
@@ -378,7 +432,10 @@ class getCps(APIView):
         try:
             cps = CPInstModel.objects.filter(ownerid=vnfInstanceId)
             if not cps:
-                return Response(data={'error': 'Cps does not exist'}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    data={
+                        'error': 'Cps does not exist'},
+                    status=status.HTTP_404_NOT_FOUND)
             arr = []
             for cp in cps:
                 arr.append(fill_cps_data(cp))
@@ -387,11 +444,16 @@ class getCps(APIView):
             if not resp_isvalid:
                 raise Exception(cp_info_serializer.errors)
 
-            return Response(data=cp_info_serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                data=cp_info_serializer.data,
+                status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
-            return Response(data={'error': 'Failed to get cps'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                data={
+                    'error': 'Failed to get cps'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_cps_data(cp):
@@ -418,7 +480,10 @@ class getVolumes(APIView):
         try:
             volumes = StorageInstModel.objects.filter(instid=vnfInstanceId)
             if not volumes:
-                return Response(data={'error': 'Volumes does not exist'}, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    data={
+                        'error': 'Volumes does not exist'},
+                    status=status.HTTP_404_NOT_FOUND)
             arr = []
             for v in volumes:
                 arr.append(fill_volumes_data(v))
@@ -427,11 +492,16 @@ class getVolumes(APIView):
             if not resp_isvalid:
                 raise Exception(volume_serializer.errors)
 
-            return Response(data=volume_serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                data=volume_serializer.data,
+                status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(e.message)
             logger.error(traceback.format_exc())
-            return Response(data={'error': 'Failed to get volumes'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                data={
+                    'error': 'Failed to get volumes'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def fill_volumes_data(v):
