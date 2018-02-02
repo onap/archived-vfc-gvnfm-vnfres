@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from django.conf.urls import url
-from rest_framework.urlpatterns import format_suffix_patterns
 
 from res.resources import views
 
@@ -27,5 +26,3 @@ urlpatterns = [
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/cps$', views.getCps.as_view(), name='get_cps'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/volumes$', views.getVolumes.as_view(), name='get_volumes'),
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)
