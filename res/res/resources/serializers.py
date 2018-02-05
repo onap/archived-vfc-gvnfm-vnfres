@@ -109,16 +109,16 @@ class VmResponseSerializer(serializers.Serializer):
         help_text="vmid",
         required=True, max_length=255, allow_null=True)
     vimid = serializers.CharField(
-        help_text="the vim id",
+        help_text="vimid",
         required=True, max_length=255, allow_null=True)
     resouceid = serializers.CharField(
-        help_text="the resouce id",
+        help_text="resouceid",
         required=True, max_length=255, allow_null=True)
     tenant = serializers.CharField(
         help_text="tenant",
         required=True, max_length=255, allow_null=True)
     instid = serializers.CharField(
-        help_text="the inst id",
+        help_text="instid",
         required=True, max_length=255, allow_null=True)
     vmname = serializers.CharField(
         help_text="vmname",
@@ -276,10 +276,10 @@ class ScaleInfoSerializer(serializers.Serializer):
 
 class InstantiatedVnfInfoSerializer(serializers.Serializer):
     flavourId = serializers.CharField(
-        help_text="flavour Id",
+        help_text="flavourId",
         required=True, max_length=255, allow_null=True)
     vnfState = serializers.ChoiceField(
-        help_text="vnf State",
+        help_text="vnfState",
         choices=[
             'STARTED',
             'STOPPED'],
@@ -316,12 +316,12 @@ class InstantiatedVnfInfoSerializer(serializers.Serializer):
 
 class VnfInfoSerializer(serializers.Serializer):
     vnfInstanceId = serializers.CharField(
-        help_text="vnf Instance Id",
+        help_text="vnfInstanceId",
         required=True,
         max_length=255,
         allow_null=True)
     vnfInstanceName = serializers.CharField(
-        help_text="vnf Instance Name",
+        help_text="vnfInstanceName",
         required=True,
         max_length=255,
         allow_null=True)
@@ -331,7 +331,7 @@ class VnfInfoSerializer(serializers.Serializer):
         max_length=255,
         allow_null=True)
     onboardedVnfPkgInfoId = serializers.CharField(
-        help_text="onboarded Vnf Pkg Info Id",
+        help_text="onboardedVnfPkgInfoId",
         required=False,
         max_length=255,
         allow_null=True)
@@ -339,7 +339,7 @@ class VnfInfoSerializer(serializers.Serializer):
         help_text="vnfdId",
         required=True, max_length=255, allow_null=True)
     vnfdVersion = serializers.CharField(
-        help_text="vnfd Version",
+        help_text="vnfdVersion",
         required=False, max_length=255, allow_null=True)
     vnfSoftwareVersion = serializers.CharField(
         help_text="vnfSoftwareVersion",
@@ -347,7 +347,7 @@ class VnfInfoSerializer(serializers.Serializer):
         max_length=255,
         allow_null=True)
     vnfProvider = serializers.CharField(
-        help_text="vnf Provider",
+        help_text="vnfProvider",
         required=False, max_length=255, allow_null=True)
     vnfProductName = serializers.CharField(
         help_text="vnfProductName",
@@ -389,12 +389,12 @@ class FlavorResponseSerializer(serializers.Serializer):
         max_length=255,
         allow_null=True)
     vimid = serializers.CharField(
-        help_text="the vim id",
+        help_text="vimid",
         required=True,
         max_length=255,
         allow_null=True)
     resouceid = serializers.CharField(
-        help_text="the resouce id",
+        help_text="resouceid",
         required=True,
         max_length=255,
         allow_null=True)
@@ -402,7 +402,7 @@ class FlavorResponseSerializer(serializers.Serializer):
         help_text="tenant",
         required=True, max_length=255, allow_null=True)
     instid = serializers.CharField(
-        help_text="the inst id",
+        help_text="instid",
         required=True,
         max_length=255,
         allow_null=True)
@@ -439,19 +439,19 @@ class NetworkResponseSerializer(serializers.Serializer):
         max_length=255,
         allow_null=True)
     vimid = serializers.CharField(
-        help_text="the vim id",
+        help_text="vimid",
         required=True,
         max_length=255,
         allow_null=True)
     resouceid = serializers.CharField(
-        help_text="the resouce id",
+        help_text="resouceid",
         required=True,
         max_length=255,
         allow_null=True)
     insttype = serializers.IntegerField(
-        help_text="the inst type", required=True, allow_null=True)
+        help_text="insttype", required=True, allow_null=True)
     instid = serializers.CharField(
-        help_text="the inst id",
+        help_text="instid",
         required=True,
         max_length=255,
         allow_null=True)
@@ -469,29 +469,29 @@ class NetworkInfoSerializer(serializers.Serializer):
 
 class SubnetResponseSerializer(serializers.Serializer):
     subnetworkid = serializers.CharField(
-        help_text="the subnetwork id",
+        help_text="subnetworkid",
         required=True,
         max_length=255,
         allow_null=True)
     vimid = serializers.CharField(
-        help_text="the vim id",
+        help_text="vimid",
         required=True,
         max_length=255,
         allow_null=True)
     resouceid = serializers.CharField(
-        help_text="the resouce id",
+        help_text="resouceid",
         required=True,
         max_length=255,
         allow_null=True)
     networkid = serializers.CharField(
-        help_text="the network id",
+        help_text="networkid",
         required=True,
         max_length=255,
         allow_null=True)
     insttype = serializers.IntegerField(
-        help_text="the inst type", required=True, allow_null=True)
+        help_text="insttype", required=True, allow_null=True)
     instid = serializers.CharField(
-        help_text="the inst id",
+        help_text="instid",
         required=True,
         max_length=255,
         allow_null=True)
@@ -514,34 +514,34 @@ class SubnetInfoSerializer(serializers.Serializer):
 
 class CpResponseSerializer(serializers.Serializer):
     cpinstanceid = serializers.CharField(
-        help_text="the cp instance id",
+        help_text="cpinstanceid",
         required=True,
         max_length=255,
         allow_null=True)
     cpdid = serializers.CharField(
-        help_text="the cpd id",
+        help_text="cpdid",
         required=True,
         max_length=255,
         allow_null=True)
     cpinstancename = serializers.CharField(
-        help_text="the cp instance name of vnf",
+        help_text="cpinstancename",
         required=True,
         max_length=255,
         allow_null=True)
     vlinstanceid = serializers.CharField(
-        help_text="the vl instance id of vnf",
+        help_text="vlinstanceid",
         required=True,
         max_length=255,
         allow_null=True)
     ownertype = serializers.IntegerField(
-        help_text="the owner type of vnf", required=True, allow_null=True)
+        help_text="ownertype", required=True, allow_null=True)
     ownerid = serializers.CharField(
-        help_text="the owner id of vnf",
+        help_text="ownerid",
         required=True,
         max_length=255,
         allow_null=True)
     relatedtype = serializers.IntegerField(
-        help_text="the related type", required=True, allow_null=True)
+        help_text="relatedtype", required=True, allow_null=True)
 
 
 class CpsInfoSerializer(serializers.Serializer):
@@ -550,34 +550,34 @@ class CpsInfoSerializer(serializers.Serializer):
 
 class VolumeResponseSerializer(serializers.Serializer):
     storageid = serializers.CharField(
-        help_text="the storage id",
+        help_text="storageid",
         required=True,
         max_length=255,
         allow_null=True)
     vimid = serializers.CharField(
-        help_text="the vim id",
+        help_text="vimid",
         required=True,
         max_length=255,
         allow_null=True)
     resouceid = serializers.CharField(
-        help_text="the resouce id of vnf",
+        help_text="resouceid",
         required=True,
         max_length=255,
         allow_null=True)
     insttype = serializers.IntegerField(
-        help_text="the inst type of vnf", required=True, allow_null=True)
+        help_text="insttype", required=True, allow_null=True)
     instid = serializers.CharField(
-        help_text="the inst id of vnf",
+        help_text="instid",
         required=True,
         max_length=255,
         allow_null=True)
     storagetype = serializers.CharField(
-        help_text="the storage type of vnf",
+        help_text="storagetype",
         required=True,
         max_length=255,
         allow_null=True)
     size = serializers.CharField(
-        help_text="the size of storage",
+        help_text="size",
         required=True, max_length=255, allow_null=True)
 
 
