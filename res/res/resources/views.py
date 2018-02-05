@@ -48,8 +48,7 @@ class getVnf(APIView):
             resp_data = fill_resp_data(vnf_inst[0])
 
             vnf_info_serializer = VnfInfoSerializer(data=resp_data)
-            resp_isvalid = vnf_info_serializer.is_valid()
-            if not resp_isvalid:
+            if not vnf_info_serializer.is_valid():
                 raise Exception(vnf_info_serializer.errors)
 
             return Response(
@@ -195,8 +194,7 @@ class getVnfs(APIView):
                 arr.append(fill_resp_data(vnf_inst))
 
             vnfs_info_serializer = VnfsInfoSerializer(data={'resp_data': arr})
-            resp_isvalid = vnfs_info_serializer.is_valid()
-            if not resp_isvalid:
+            if not vnfs_info_serializer.is_valid():
                 raise Exception(vnfs_info_serializer.errors)
 
             return Response(
@@ -231,8 +229,7 @@ class getVms(APIView):
                 arr.append(fill_vms_data(vm))
 
             vm_info_serializer = VmInfoSerializer(data={'resp_data': arr})
-            resp_isvalid = vm_info_serializer.is_valid()
-            if not resp_isvalid:
+            if not vm_info_serializer.is_valid():
                 raise Exception(vm_info_serializer.errors)
 
             return Response(
@@ -288,10 +285,8 @@ class getFlavors(APIView):
             for flavour in flavours:
                 arr.append(fill_flavours_data(flavour))
 
-            flavor_info_serializer = FlavorInfoSerializer(
-                data={'resp_data': arr})
-            resp_isvalid = flavor_info_serializer.is_valid()
-            if not resp_isvalid:
+            flavor_info_serializer = FlavorInfoSerializer(data={'resp_data': arr})
+            if not flavor_info_serializer.is_valid():
                 raise Exception(flavor_info_serializer.errors)
 
             return Response(
@@ -341,10 +336,8 @@ class getNetworks(APIView):
             for network in networks:
                 arr.append(fill_networks_data(network))
 
-            network_info_serializer = NetworkInfoSerializer(
-                data={'resp_data': arr})
-            resp_isvalid = network_info_serializer.is_valid()
-            if not resp_isvalid:
+            network_info_serializer = NetworkInfoSerializer(data={'resp_data': arr})
+            if not network_info_serializer.is_valid():
                 raise Exception(network_info_serializer.errors)
 
             return Response(
@@ -389,10 +382,8 @@ class getSubnets(APIView):
             arr = []
             for subnet in subnets:
                 arr.append(fill_subnets_data(subnet))
-            subnet_info_serializer = SubnetInfoSerializer(
-                data={'resp_data': arr})
-            resp_isvalid = subnet_info_serializer.is_valid()
-            if not resp_isvalid:
+            subnet_info_serializer = SubnetInfoSerializer(data={'resp_data': arr})
+            if not subnet_info_serializer.is_valid():
                 raise Exception(subnet_info_serializer.errors)
 
             return Response(
@@ -440,8 +431,7 @@ class getCps(APIView):
             for cp in cps:
                 arr.append(fill_cps_data(cp))
             cp_info_serializer = CpsInfoSerializer(data={'resp_data': arr})
-            resp_isvalid = cp_info_serializer.is_valid()
-            if not resp_isvalid:
+            if not cp_info_serializer.is_valid():
                 raise Exception(cp_info_serializer.errors)
 
             return Response(
@@ -488,8 +478,7 @@ class getVolumes(APIView):
             for v in volumes:
                 arr.append(fill_volumes_data(v))
             volume_serializer = VolumeInfoSerializer(data={'resp_data': arr})
-            resp_isvalid = volume_serializer.is_valid()
-            if not resp_isvalid:
+            if not volume_serializer.is_valid():
                 raise Exception(volume_serializer.errors)
 
             return Response(
