@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.test import TestCase, Client
+from django.test import TestCase
 from rest_framework import status
+from rest_framework.test import APIClient
 
 from res.pub.database.models import NfInstModel, StorageInstModel, VmInstModel, FlavourInstModel, NetworkInstModel, \
     SubNetworkInstModel, CPInstModel
@@ -21,7 +22,7 @@ from res.pub.database.models import NfInstModel, StorageInstModel, VmInstModel, 
 
 class ResourceTest(TestCase):
     def setUp(self):
-        self.client = Client()
+        self.client = APIClient()
         self.nf_inst_id = "01"
         NfInstModel.objects.all().delete()
         self.test_data = {
