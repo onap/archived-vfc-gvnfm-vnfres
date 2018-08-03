@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'res.pub.database',
     'res.samples',
+    'res.swagger',
     'res.resources',
     'drf_yasg',
 ]
