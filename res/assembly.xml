@@ -48,20 +48,6 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>assembly/dbscripts/mysql</directory>
-            <outputDirectory>/assembly/dbscripts/mysql</outputDirectory>
-            <includes>
-                <include>*.sql</include>
-            </includes>
-        </fileSet>
-		<fileSet>
-            <directory>assembly/bin</directory>
-            <outputDirectory>/assembly/bin</outputDirectory>
-            <includes>
-                <include>*.sh</include>
-            </includes>
-        </fileSet>
-        <fileSet>
             <directory>.</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
