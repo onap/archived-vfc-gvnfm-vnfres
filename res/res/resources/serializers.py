@@ -620,78 +620,78 @@ class SubnetInfoSerializer(serializers.Serializer):
 
 class CpResponseSerializer(serializers.Serializer):
     cpinstanceid = serializers.CharField(
-        help_text="cpinstanceid",
+        help_text="ID of CP instance",
         required=True,
         max_length=255,
         allow_null=True)
     cpdid = serializers.CharField(
-        help_text="cpdid",
+        help_text="ID of CPD",
         required=True,
         max_length=255,
         allow_null=True)
     cpinstancename = serializers.CharField(
-        help_text="cpinstancename",
+        help_text="Name of CP instance",
         required=True,
         max_length=255,
         allow_null=True)
     vlinstanceid = serializers.CharField(
-        help_text="vlinstanceid",
+        help_text="ID of VL instance",
         required=True,
         max_length=255,
         allow_null=True)
     ownertype = serializers.IntegerField(
-        help_text="ownertype",
+        help_text="Owner type",
         required=True,
         allow_null=True)
     ownerid = serializers.CharField(
-        help_text="ownerid",
+        help_text="ID of owner",
         required=True,
         max_length=255,
         allow_null=True)
     relatedtype = serializers.IntegerField(
-        help_text="relatedtype",
+        help_text="Related type",
         required=True,
         allow_null=True)
 
 
 class CpsInfoSerializer(serializers.Serializer):
     resp_data = CpResponseSerializer(
-        help_text="the response data",
+        help_text="CP response data",
         many=True)
 
 
 class VolumeResponseSerializer(serializers.Serializer):
     storageid = serializers.CharField(
-        help_text="storageid",
+        help_text="ID of storage",
         required=True,
         max_length=255,
         allow_null=True)
     vimid = serializers.CharField(
-        help_text="vimid",
+        help_text="ID of VIM",
         required=True,
         max_length=255,
         allow_null=True)
     resouceid = serializers.CharField(
-        help_text="resouceid",
+        help_text="ID of resouce",
         required=True,
         max_length=255,
         allow_null=True)
     insttype = serializers.IntegerField(
-        help_text="insttype",
+        help_text="Instance type",
         required=True,
         allow_null=True)
     instid = serializers.CharField(
-        help_text="instid",
+        help_text="ID of instance",
         required=True,
         max_length=255,
         allow_null=True)
     storagetype = serializers.CharField(
-        help_text="storagetype",
+        help_text="Storage type",
         required=True,
         max_length=255,
         allow_null=True)
     size = serializers.CharField(
-        help_text="size",
+        help_text="Size",
         required=True,
         max_length=255,
         allow_null=True)
@@ -699,5 +699,5 @@ class VolumeResponseSerializer(serializers.Serializer):
 
 class VolumeInfoSerializer(serializers.Serializer):
     resp_data = VolumeResponseSerializer(
-        help_text="the response data",
+        help_text="Volume response data",
         many=True)
