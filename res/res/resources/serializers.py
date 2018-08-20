@@ -213,38 +213,38 @@ class VmResponseSerializer(serializers.Serializer):
 
 class VimInfoSerializer(serializers.Serializer):
     vimInfoId = serializers.CharField(
-        help_text="vimInfoId",
+        help_text="ID of VIM info",
         required=False,
         max_length=255,
         allow_null=True)
     vimId = serializers.CharField(
-        help_text="vimId",
+        help_text="ID of VIM",
         required=False,
         max_length=255,
         allow_null=True)
     interfaceEndpoint = serializers.CharField(
-        help_text="interfaceEndpoint",
+        help_text="Interface endpoint",
         required=False,
         max_length=255,
         allow_null=True)
     interfaceInfo = InterfaceInfoSerializer(
-        help_text="vimInfoId",
+        help_text="ID of VIM info",
         required=False,
         allow_null=True)
     accessInfo = AccessInfoSerializer(
-        help_text="accessInfo",
+        help_text="Access info",
         required=False,
         allow_null=True)
 
 
 class LinkPortsSerializer(serializers.Serializer):
     resourceId = serializers.CharField(
-        help_text="resourceId",
+        help_text="ID of resource",
         required=True,
         max_length=255,
         allow_null=True)
     vimId = serializers.CharField(
-        help_text="vimId",
+        help_text="ID of VIM",
         required=False,
         max_length=255,
         allow_null=True)
@@ -252,17 +252,17 @@ class LinkPortsSerializer(serializers.Serializer):
 
 class ResourceHandleSerializer(serializers.Serializer):
     resourceId = serializers.CharField(
-        help_text="resourceId",
+        help_text="ID of resource",
         required=True,
         max_length=255,
         allow_null=True)
     vimId = serializers.CharField(
-        help_text="vimId",
+        help_text="ID of VIM",
         required=False,
         max_length=255,
         allow_null=True)
     resourceProviderId = serializers.CharField(
-        help_text="resourceProviderId",
+        help_text="ID of resource provider",
         required=False,
         max_length=255,
         allow_null=True)
@@ -270,26 +270,26 @@ class ResourceHandleSerializer(serializers.Serializer):
 
 class ExtVirtualLinkInfoSerializer(serializers.Serializer):
     extVirtualLinkId = serializers.CharField(
-        help_text="extVirtualLinkId",
+        help_text="ID of ext virtual link",
         required=True,
         max_length=255,
         allow_null=True)
     resourceHandle = ResourceHandleSerializer(
-        help_text="iPAddress",
+        help_text="Resource handle",
         required=True)
     linkPorts = LinkPortsSerializer(
-        help_text="iPAddress",
+        help_text="Link ports",
         many=True,
         allow_null=True)
 
 
 class L3AddressDataSerializer(serializers.Serializer):
     iPAddressType = serializers.ChoiceField(
-        help_text="iPAddressType",
+        help_text="IP address type",
         choices=['IPv4', 'IPv6'],
         required=True)
     iPAddress = serializers.CharField(
-        help_text="iPAddress",
+        help_text="IP address",
         required=True,
         max_length=255,
         allow_null=True)
@@ -297,16 +297,16 @@ class L3AddressDataSerializer(serializers.Serializer):
 
 class NetworkAddressSerializer(serializers.Serializer):
     addressType = serializers.ChoiceField(
-        help_text="addressType",
+        help_text="Address type",
         choices=['MAC', 'IP'],
         required=True)
     l2AddressData = serializers.CharField(
-        help_text="l2AddressData",
+        help_text="l2 address data",
         required=False,
         max_length=255,
         allow_null=True)
     l3AddressData = L3AddressDataSerializer(
-        help_text="addresses",
+        help_text="l3 address data",
         required=False)
 
 
