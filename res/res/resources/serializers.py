@@ -465,100 +465,100 @@ class VnfInfoSerializer(serializers.Serializer):
 
 class VnfsInfoSerializer(serializers.Serializer):
     resp_data = VnfInfoSerializer(
-        help_text="the response data",
+        help_text="VNF response data",
         many=True)
 
 
 class VmInfoSerializer(serializers.Serializer):
     resp_data = VmResponseSerializer(
-        help_text="the response data",
+        help_text="VM response data",
         many=True)
 
 
 class FlavorResponseSerializer(serializers.Serializer):
     flavourid = serializers.CharField(
-        help_text="flavourid",
+        help_text="ID of flavour",
         required=True,
         max_length=255,
         allow_null=True)
     vimid = serializers.CharField(
-        help_text="vimid",
+        help_text="ID of VIM",
         required=True,
         max_length=255,
         allow_null=True)
     resouceid = serializers.CharField(
-        help_text="resouceid",
+        help_text="ID of resouce",
         required=True,
         max_length=255,
         allow_null=True)
     tenant = serializers.CharField(
-        help_text="tenant",
+        help_text="Tenant",
         required=True,
         max_length=255,
         allow_null=True)
     instid = serializers.CharField(
-        help_text="instid",
+        help_text="ID of instance",
         required=True,
         max_length=255,
         allow_null=True)
     name = serializers.CharField(
-        help_text="name",
+        help_text="Name",
         required=True,
         max_length=255,
         allow_null=True)
     extraspecs = serializers.CharField(
-        help_text="extraspecs",
+        help_text="Extraspecs",
         required=True,
         max_length=255,
         allow_null=True)
     create_time = serializers.CharField(
-        help_text="create_time",
+        help_text="Create time",
         required=True,
         max_length=255,
         allow_null=True)
     memory = serializers.IntegerField(
-        help_text="memory",
+        help_text="Memory",
         required=True,
         allow_null=True)
     vcpu = serializers.IntegerField(
-        help_text="vcpu",
+        help_text="VCPU",
         required=True,
         allow_null=True)
 
 
 class FlavorInfoSerializer(serializers.Serializer):
     resp_data = FlavorResponseSerializer(
-        help_text="the response data",
+        help_text="Flavor response data",
         many=True)
 
 
 class NetworkResponseSerializer(serializers.Serializer):
     networkid = serializers.CharField(
-        help_text="networkid",
+        help_text="ID of network",
         required=True,
         max_length=255,
         allow_null=True)
     vimid = serializers.CharField(
-        help_text="vimid",
+        help_text="ID of VIM",
         required=True,
         max_length=255,
         allow_null=True)
     resouceid = serializers.CharField(
-        help_text="resouceid",
+        help_text="ID of resouce",
         required=True,
         max_length=255,
         allow_null=True)
     insttype = serializers.IntegerField(
-        help_text="insttype",
+        help_text="Instance type",
         required=True,
         allow_null=True)
     instid = serializers.CharField(
-        help_text="instid",
+        help_text="ID of instance",
         required=True,
         max_length=255,
         allow_null=True)
     name = serializers.CharField(
-        help_text="name",
+        help_text="Name",
         required=True,
         max_length=255,
         allow_null=True)
@@ -566,47 +566,47 @@ class NetworkResponseSerializer(serializers.Serializer):
 
 class NetworkInfoSerializer(serializers.Serializer):
     resp_data = NetworkResponseSerializer(
-        help_text="the response data",
+        help_text="Network response data",
         many=True)
 
 
 class SubnetResponseSerializer(serializers.Serializer):
     subnetworkid = serializers.CharField(
-        help_text="subnetworkid",
+        help_text="ID of subnetwork",
         required=True,
         max_length=255,
         allow_null=True)
     vimid = serializers.CharField(
-        help_text="vimid",
+        help_text="ID of VIM",
         required=True,
         max_length=255,
         allow_null=True)
     resouceid = serializers.CharField(
-        help_text="resouceid",
+        help_text="ID of resouce",
         required=True,
         max_length=255,
         allow_null=True)
     networkid = serializers.CharField(
-        help_text="networkid",
+        help_text="ID of network",
         required=True,
         max_length=255,
         allow_null=True)
     insttype = serializers.IntegerField(
-        help_text="insttype",
+        help_text="Instance type",
         required=True,
         allow_null=True)
     instid = serializers.CharField(
-        help_text="instid",
+        help_text="ID of instance",
         required=True,
         max_length=255,
         allow_null=True)
     name = serializers.CharField(
-        help_text="name",
+        help_text="Name",
         required=True,
         max_length=255,
         allow_null=True)
     cidr = serializers.CharField(
-        help_text="cidr",
+        help_text="CIDR",
         required=True,
         max_length=255,
         allow_null=True)
@@ -614,7 +614,7 @@ class SubnetResponseSerializer(serializers.Serializer):
 
 class SubnetInfoSerializer(serializers.Serializer):
     resp_data = SubnetResponseSerializer(
-        help_text="the response data",
+        help_text="Subnet response data",
         many=True)
 
 
