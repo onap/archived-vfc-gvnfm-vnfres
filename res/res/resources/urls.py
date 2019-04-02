@@ -15,6 +15,7 @@
 from django.conf.urls import url
 
 from res.resources import views
+from res.resources.health_check_views import HealthCheckView
 
 urlpatterns = [
     url(r'^api/vnfres/v1/vnfs/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)$', views.getVnf.as_view(), name='get_vnf'),
@@ -25,4 +26,7 @@ urlpatterns = [
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/subnets$', views.getSubnets.as_view(), name='get_subnets'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/cps$', views.getCps.as_view(), name='get_cps'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/volumes$', views.getVolumes.as_view(), name='get_volumes'),
+
+    # health check
+    url(r'^api/vnfres/v1/healthcheck$', HealthCheckView.as_view()),
 ]
