@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import json
 
 from django.test import TestCase
 from rest_framework import status
@@ -220,3 +221,17 @@ class ResourceTest(TestCase):
         response = self.client.get("/api/vnfres/v1/%s/volumes" % self.nf_inst_id)
         self.assertEqual(self.volumes_data, response.data)
         self.failUnlessEqual(status.HTTP_200_OK, response.status_code)
+
+
+class HealthCheckViewTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+    def tearDown(self):
+        pass
+
+    def test_health_check(self):
+        response = self.client.get("/api/vnfres/v1/health_check")
+        self.assertEqual(status.HTTP_200_OK, response.status_code, response.content)
+        resp_data = json.loads(response.content)
+        self.assertEqual({"status": "active"}, resp_data)

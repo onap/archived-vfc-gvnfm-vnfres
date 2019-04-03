@@ -28,5 +28,5 @@ urlpatterns = [
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/volumes$', views.getVolumes.as_view(), name='get_volumes'),
 
     # health check
-    url(r'^api/vnfres/v1/healthcheck$', HealthCheckView.as_view()),
+    url(r'^api/vnfres/v1/health_check$', HealthCheckView.as_view()),
 ]
