@@ -36,7 +36,7 @@ WORKDIR /service
 RUN wget -q -O vfc-gvnfm-vnfres.zip 'https://nexus.onap.org/service/local/artifact/maven/redirect?r=snapshots&g=org.onap.vfc.gvnfm.vnfres.res&a=vfc-gvnfm-vnfres-res&v=LATEST&e=zip' && \
     unzip vfc-gvnfm-vnfres.zip && \
     rm -rf vfc-gvnfm-vnfres.zip && \
-    chown onap:onap /service -R
+    chown onap:onap -R /service /var/log
 
 WORKDIR /service/vfc/gvnfm/vnfres/res
 RUN pip install -r requirements.txt
