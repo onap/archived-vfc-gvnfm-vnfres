@@ -26,8 +26,3 @@ else
     nohup uwsgi --http :8802 -t 120 --module res.wsgi --master --processes 4 &
 fi
 
-while [ ! -f $logDir/runtime_res.log ]; do
-    sleep 1
-done
-
-tail -F  $logDir/runtime_res.log
