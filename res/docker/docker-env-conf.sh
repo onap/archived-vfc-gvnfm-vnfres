@@ -7,7 +7,7 @@ install_sf(){
     apk --no-cache add python-dev libffi-dev musl-dev py2-virtualenv
 
     # get binary zip from nexus
-    wget -q -O vfc-gvnfm-vnfres.zip 'https://nexus.onap.org/service/local/artifact/maven/redirect?r=snapshots&g=org.onap.vfc.gvnfm.vnfres.res&a=vfc-gvnfm-vnfres-res&v=${pkg_verison}-SNAPSHOT&e=zip' && \
+    wget -q -O vfc-gvnfm-vnfres.zip "https://nexus.onap.org/service/local/artifact/maven/redirect?r=snapshots&g=org.onap.vfc.gvnfm.vnfres.res&a=vfc-gvnfm-vnfres-res&v=${pkg_version}-SNAPSHOT&e=zip" && \
     unzip vfc-gvnfm-vnfres.zip && \
     rm -rf vfc-gvnfm-vnfres.zip
     wait
