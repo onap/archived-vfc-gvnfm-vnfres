@@ -52,10 +52,10 @@ class getVnf(APIView):
                 raise Exception(vnf_info_serializer.errors)
 
             return Response(
-                data=vnf_info_serializer.data,
+                data=resp_data,
                 status=status.HTTP_200_OK)
         except Exception as e:
-            logger.error(e.message)
+            logger.error(e.args[0])
             logger.error(traceback.format_exc())
             return Response(
                 data={
@@ -198,10 +198,10 @@ class getVnfs(APIView):
                 raise Exception(vnfs_info_serializer.errors)
 
             return Response(
-                data=vnfs_info_serializer.data,
+                data={'resp_data': arr},
                 status=status.HTTP_200_OK)
         except Exception as e:
-            logger.error(e.message)
+            logger.error(e.args[0])
             logger.error(traceback.format_exc())
             return Response(
                 data={
@@ -233,10 +233,10 @@ class getVms(APIView):
                 raise Exception(vm_info_serializer.errors)
 
             return Response(
-                data=vm_info_serializer.data,
+                data={'resp_data': arr},
                 status=status.HTTP_200_OK)
         except Exception as e:
-            logger.error(e.message)
+            logger.error(e.args[0])
             logger.error(traceback.format_exc())
             return Response(
                 data={
@@ -293,7 +293,7 @@ class getFlavors(APIView):
                 data=flavor_info_serializer.data,
                 status=status.HTTP_200_OK)
         except Exception as e:
-            logger.error(e.message)
+            logger.error(e.args[0])
             logger.error(traceback.format_exc())
             return Response(
                 data={
@@ -344,7 +344,7 @@ class getNetworks(APIView):
                 data=network_info_serializer.data,
                 status=status.HTTP_200_OK)
         except Exception as e:
-            logger.error(e.message)
+            logger.error(e.args[0])
             logger.error(traceback.format_exc())
             return Response(
                 data={
@@ -390,7 +390,7 @@ class getSubnets(APIView):
                 data=subnet_info_serializer.data,
                 status=status.HTTP_200_OK)
         except Exception as e:
-            logger.error(e.message)
+            logger.error(e.args[0])
             logger.error(traceback.format_exc())
             return Response(
                 data={
@@ -438,7 +438,7 @@ class getCps(APIView):
                 data=cp_info_serializer.data,
                 status=status.HTTP_200_OK)
         except Exception as e:
-            logger.error(e.message)
+            logger.error(e.args[0])
             logger.error(traceback.format_exc())
             return Response(
                 data={
@@ -485,7 +485,7 @@ class getVolumes(APIView):
                 data=volume_serializer.data,
                 status=status.HTTP_200_OK)
         except Exception as e:
-            logger.error(e.message)
+            logger.error(e.args[0])
             logger.error(traceback.format_exc())
             return Response(
                 data={
