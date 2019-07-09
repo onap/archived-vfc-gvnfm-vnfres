@@ -20,14 +20,66 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from res.pub.database.models import NfInstModel, StorageInstModel, NetworkInstModel, VLInstModel, \
-    VNFCInstModel, VmInstModel, FlavourInstModel, SubNetworkInstModel, CPInstModel
 from res.pub.exceptions import VNFRESException
+from res.pub.exceptions import NotFoundException
 from res.pub.utils.syscomm import fun_name
-from res.resources.serializers import VolumeInfoSerializer, CpsInfoSerializer, SubnetInfoSerializer, \
-    NetworkInfoSerializer, FlavorInfoSerializer, VmInfoSerializer, VnfInfoSerializer, VnfsInfoSerializer
+from res.pub.database.models import NfInstModel
+from res.pub.database.models import StorageInstModel
+from res.pub.database.models import NetworkInstModel
+from res.pub.database.models import VLInstModel
+from res.pub.database.models import VNFCInstModel
+from res.pub.database.models import VmInstModel
+from res.pub.database.models import FlavourInstModel
+from res.pub.database.models import SubNetworkInstModel
+from res.pub.database.models import CPInstModel
+from res.resources.serializers import VolumeInfoSerializer
+from res.resources.serializers import CpsInfoSerializer
+from res.resources.serializers import SubnetInfoSerializer
+from res.resources.serializers import NetworkInfoSerializer
+from res.resources.serializers import FlavorInfoSerializer
+from res.resources.serializers import VmInfoSerializer
+from res.resources.serializers import VnfInfoSerializer
+from res.resources.serializers import VnfsInfoSerializer
 
 logger = logging.getLogger(__name__)
+
+
+def make_error_resp(status, detail):
+    return Response(
+        data={
+            'status': status,
+            'detail': detail
+        },
+        status=status
+    )
+
+
+def view_safe_call_with_log(logger):
+    def view_safe_call(func):
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except NotFoundException as e:
+                logger.error(e.args[0])
+                return make_error_resp(
+                    detail=e.args[0],
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            except VNFRESException as e:
+                logger.error(e.args[0])
+                return make_error_resp(
+                    detail=e.args[0],
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+            except Exception as e:
+                logger.error(e.args[0])
+                logger.error(traceback.format_exc())
+                return make_error_resp(
+                    detail='Unexpected exception',
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+        return wrapper
+    return view_safe_call
 
 
 class getVnf(APIView):
@@ -35,32 +87,27 @@ class getVnf(APIView):
         responses={
             status.HTTP_200_OK: VnfInfoSerializer(),
             status.HTTP_404_NOT_FOUND: 'Vnf does not exist',
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
+        }
+    )
+    @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
         logger.debug("[%s]vnf_inst_id=%s", fun_name(), vnfInstanceId)
-        try:
-            vnf_inst = NfInstModel.objects.filter(nfinstid=vnfInstanceId)
-            if not vnf_inst:
-                return Response(
-                    data={
-                        'error': 'Vnf(%s) does not exist' % vnfInstanceId},
-                    status=status.HTTP_404_NOT_FOUND)
-            resp_data = fill_resp_data(vnf_inst[0])
 
-            vnf_info_serializer = VnfInfoSerializer(data=resp_data)
-            if not vnf_info_serializer.is_valid():
-                raise Exception(vnf_info_serializer.errors)
+        vnf_inst = NfInstModel.objects.filter(nfinstid=vnfInstanceId)
+        if not vnf_inst:
+            raise NotFoundException('Vnf(%s) does not exist' % vnfInstanceId)
 
-            return Response(
-                data=resp_data,
-                status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(e.args[0])
-            logger.error(traceback.format_exc())
-            return Response(
-                data={
-                    'error': 'Failed to get Vnf(%s)' % vnfInstanceId},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        resp_data = fill_resp_data(vnf_inst[0])
+
+        vnf_info_serializer = VnfInfoSerializer(data=resp_data)
+        if not vnf_info_serializer.is_valid():
+            raise VNFRESException(vnf_info_serializer.errors)
+
+        return Response(
+            data=resp_data,
+            status=status.HTTP_200_OK
+        )
 
 
 def fill_resp_data(vnf):
@@ -178,70 +225,48 @@ class getVnfs(APIView):
     @swagger_auto_schema(
         responses={
             status.HTTP_200_OK: VnfsInfoSerializer(),
-            status.HTTP_404_NOT_FOUND: 'Vnfs does not exist',
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
+        }
+    )
+    @view_safe_call_with_log(logger=logger)
     def get(self, request):
         logger.debug("Query all the vnfs[%s]", fun_name())
-        try:
-            vnf_insts = NfInstModel.objects.all()
-            if not vnf_insts:
-                return Response(
-                    data={
-                        'error': 'Vnfs does not exist'},
-                    status=status.HTTP_404_NOT_FOUND)
-            arr = []
-            for vnf_inst in vnf_insts:
-                arr.append(fill_resp_data(vnf_inst))
 
-            vnfs_info_serializer = VnfsInfoSerializer(data={'resp_data': arr})
-            if not vnfs_info_serializer.is_valid():
-                raise Exception(vnfs_info_serializer.errors)
+        vnf_insts = NfInstModel.objects.all()
+        arr = [fill_resp_data(vnf_inst) for vnf_inst in vnf_insts]
 
-            return Response(
-                data={'resp_data': arr},
-                status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(e.args[0])
-            logger.error(traceback.format_exc())
-            return Response(
-                data={
-                    'error': 'Failed to get Vnfs'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        vnfs_info_serializer = VnfsInfoSerializer(data={'resp_data': arr})
+        if not vnfs_info_serializer.is_valid():
+            raise VNFRESException(vnfs_info_serializer.errors)
+
+        return Response(
+            data={'resp_data': arr},
+            status=status.HTTP_200_OK
+        )
 
 
 class getVms(APIView):
     @swagger_auto_schema(
         responses={
             status.HTTP_200_OK: VmInfoSerializer(),
-            status.HTTP_404_NOT_FOUND: 'Vms does not exist',
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
+        }
+    )
+    @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
         logger.debug("Query all the vms by vnfInstanceId[%s]", fun_name())
-        try:
-            vms = VmInstModel.objects.filter(instid=vnfInstanceId)
-            if not vms:
-                return Response(
-                    data={
-                        'error': 'Vms does not exist'},
-                    status=status.HTTP_404_NOT_FOUND)
-            arr = []
-            for vm in vms:
-                arr.append(fill_vms_data(vm))
 
-            vm_info_serializer = VmInfoSerializer(data={'resp_data': arr})
-            if not vm_info_serializer.is_valid():
-                raise Exception(vm_info_serializer.errors)
+        vms = VmInstModel.objects.filter(instid=vnfInstanceId)
+        arr = [fill_vms_data(vm) for vm in vms]
 
-            return Response(
-                data={'resp_data': arr},
-                status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(e.args[0])
-            logger.error(traceback.format_exc())
-            return Response(
-                data={
-                    'error': 'Failed to get Vms'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        vm_info_serializer = VmInfoSerializer(data={'resp_data': arr})
+        if not vm_info_serializer.is_valid():
+            raise VNFRESException(vm_info_serializer.errors)
+
+        return Response(
+            data={'resp_data': arr},
+            status=status.HTTP_200_OK
+        )
 
 
 def fill_vms_data(vm):
@@ -270,35 +295,24 @@ class getFlavors(APIView):
     @swagger_auto_schema(
         responses={
             status.HTTP_200_OK: FlavorInfoSerializer(),
-            status.HTTP_404_NOT_FOUND: 'Flavours does not exist',
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
+        }
+    )
+    @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
         logger.debug("Query all the flavors by vnfInstanceId[%s]", fun_name())
-        try:
-            flavours = FlavourInstModel.objects.filter(instid=vnfInstanceId)
-            if not flavours:
-                return Response(
-                    data={
-                        'error': 'Flavours does not exist'},
-                    status=status.HTTP_404_NOT_FOUND)
-            arr = []
-            for flavour in flavours:
-                arr.append(fill_flavours_data(flavour))
 
-            flavor_info_serializer = FlavorInfoSerializer(data={'resp_data': arr})
-            if not flavor_info_serializer.is_valid():
-                raise Exception(flavor_info_serializer.errors)
+        flavours = FlavourInstModel.objects.filter(instid=vnfInstanceId)
+        arr = [fill_flavours_data(flavour) for flavour in flavours]
 
-            return Response(
-                data=flavor_info_serializer.data,
-                status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(e.args[0])
-            logger.error(traceback.format_exc())
-            return Response(
-                data={
-                    'error': 'Failed to get flavours'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        flavor_info_serializer = FlavorInfoSerializer(data={'resp_data': arr})
+        if not flavor_info_serializer.is_valid():
+            raise VNFRESException(flavor_info_serializer.errors)
+
+        return Response(
+            data=flavor_info_serializer.data,
+            status=status.HTTP_200_OK
+        )
 
 
 def fill_flavours_data(f):
@@ -321,35 +335,24 @@ class getNetworks(APIView):
     @swagger_auto_schema(
         responses={
             status.HTTP_200_OK: NetworkInfoSerializer(),
-            status.HTTP_404_NOT_FOUND: 'Networks does not exist',
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
+        }
+    )
+    @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
         logger.debug("Query all the networks by vnfInstanceId[%s]", fun_name())
-        try:
-            networks = NetworkInstModel.objects.filter(instid=vnfInstanceId)
-            if not networks:
-                return Response(
-                    data={
-                        'error': 'Networks does not exist'},
-                    status=status.HTTP_404_NOT_FOUND)
-            arr = []
-            for network in networks:
-                arr.append(fill_networks_data(network))
 
-            network_info_serializer = NetworkInfoSerializer(data={'resp_data': arr})
-            if not network_info_serializer.is_valid():
-                raise Exception(network_info_serializer.errors)
+        networks = NetworkInstModel.objects.filter(instid=vnfInstanceId)
+        arr = [fill_networks_data(network) for network in networks]
 
-            return Response(
-                data=network_info_serializer.data,
-                status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(e.args[0])
-            logger.error(traceback.format_exc())
-            return Response(
-                data={
-                    'error': 'Failed to get networks'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        network_info_serializer = NetworkInfoSerializer(data={'resp_data': arr})
+        if not network_info_serializer.is_valid():
+            raise VNFRESException(network_info_serializer.errors)
+
+        return Response(
+            data=network_info_serializer.data,
+            status=status.HTTP_200_OK
+        )
 
 
 def fill_networks_data(network):
@@ -368,34 +371,24 @@ class getSubnets(APIView):
     @swagger_auto_schema(
         responses={
             status.HTTP_200_OK: SubnetInfoSerializer(),
-            status.HTTP_404_NOT_FOUND: 'Subnets does not exist',
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
+        }
+    )
+    @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
         logger.debug("Query all the subnets by vnfInstanceId[%s]", fun_name())
-        try:
-            subnets = SubNetworkInstModel.objects.filter(instid=vnfInstanceId)
-            if not subnets:
-                return Response(
-                    data={
-                        'error': 'Subnets does not exist'},
-                    status=status.HTTP_404_NOT_FOUND)
-            arr = []
-            for subnet in subnets:
-                arr.append(fill_subnets_data(subnet))
-            subnet_info_serializer = SubnetInfoSerializer(data={'resp_data': arr})
-            if not subnet_info_serializer.is_valid():
-                raise Exception(subnet_info_serializer.errors)
 
-            return Response(
-                data=subnet_info_serializer.data,
-                status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(e.args[0])
-            logger.error(traceback.format_exc())
-            return Response(
-                data={
-                    'error': 'Failed to get subnets'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        subnets = SubNetworkInstModel.objects.filter(instid=vnfInstanceId)
+        arr = [fill_subnets_data(subnet) for subnet in subnets]
+
+        subnet_info_serializer = SubnetInfoSerializer(data={'resp_data': arr})
+        if not subnet_info_serializer.is_valid():
+            raise VNFRESException(subnet_info_serializer.errors)
+
+        return Response(
+            data=subnet_info_serializer.data,
+            status=status.HTTP_200_OK
+        )
 
 
 def fill_subnets_data(subnet):
@@ -416,34 +409,24 @@ class getCps(APIView):
     @swagger_auto_schema(
         responses={
             status.HTTP_200_OK: CpsInfoSerializer(),
-            status.HTTP_404_NOT_FOUND: 'Cps does not exist',
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
+        }
+    )
+    @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
         logger.debug("Query all the cps by vnfInstanceId[%s]", fun_name())
-        try:
-            cps = CPInstModel.objects.filter(ownerid=vnfInstanceId)
-            if not cps:
-                return Response(
-                    data={
-                        'error': 'Cps does not exist'},
-                    status=status.HTTP_404_NOT_FOUND)
-            arr = []
-            for cp in cps:
-                arr.append(fill_cps_data(cp))
-            cp_info_serializer = CpsInfoSerializer(data={'resp_data': arr})
-            if not cp_info_serializer.is_valid():
-                raise Exception(cp_info_serializer.errors)
 
-            return Response(
-                data=cp_info_serializer.data,
-                status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(e.args[0])
-            logger.error(traceback.format_exc())
-            return Response(
-                data={
-                    'error': 'Failed to get cps'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        cps = CPInstModel.objects.filter(ownerid=vnfInstanceId)
+        arr = [fill_cps_data(cp) for cp in cps]
+
+        cp_info_serializer = CpsInfoSerializer(data={'resp_data': arr})
+        if not cp_info_serializer.is_valid():
+            raise VNFRESException(cp_info_serializer.errors)
+
+        return Response(
+            data=cp_info_serializer.data,
+            status=status.HTTP_200_OK
+        )
 
 
 def fill_cps_data(cp):
@@ -463,34 +446,24 @@ class getVolumes(APIView):
     @swagger_auto_schema(
         responses={
             status.HTTP_200_OK: VolumeInfoSerializer(),
-            status.HTTP_404_NOT_FOUND: 'Volumes does not exist',
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'})
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
+        }
+    )
+    @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
         logger.debug("Query all the volumes by vnfInstanceId[%s]", fun_name())
-        try:
-            volumes = StorageInstModel.objects.filter(instid=vnfInstanceId)
-            if not volumes:
-                return Response(
-                    data={
-                        'error': 'Volumes does not exist'},
-                    status=status.HTTP_404_NOT_FOUND)
-            arr = []
-            for v in volumes:
-                arr.append(fill_volumes_data(v))
-            volume_serializer = VolumeInfoSerializer(data={'resp_data': arr})
-            if not volume_serializer.is_valid():
-                raise Exception(volume_serializer.errors)
 
-            return Response(
-                data=volume_serializer.data,
-                status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(e.args[0])
-            logger.error(traceback.format_exc())
-            return Response(
-                data={
-                    'error': 'Failed to get volumes'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        volumes = StorageInstModel.objects.filter(instid=vnfInstanceId)
+        arr = [fill_volumes_data(v) for v in volumes]
+
+        volume_serializer = VolumeInfoSerializer(data={'resp_data': arr})
+        if not volume_serializer.is_valid():
+            raise VNFRESException(volume_serializer.errors)
+
+        return Response(
+            data=volume_serializer.data,
+            status=status.HTTP_200_OK
+        )
 
 
 def fill_volumes_data(v):

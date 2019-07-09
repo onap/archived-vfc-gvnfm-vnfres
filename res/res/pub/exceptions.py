@@ -15,3 +15,7 @@
 
 class VNFRESException(Exception):
     pass
+
+
+class NotFoundException(Exception):
+    pass
