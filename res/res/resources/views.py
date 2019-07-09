@@ -82,6 +82,23 @@ def view_safe_call_with_log(logger):
     return view_safe_call
 
 
+def query_resources(res_type, logger, vnf_instid, resources, cvt_fun, res_serializer):
+    logger.debug("Enter query %s", res_type)
+
+    resp = {
+        'resp_data': [cvt_fun(res) for res in resources]
+    }
+
+    resp_serializer = res_serializer(data=resp)
+    if not resp_serializer.is_valid():
+        raise VNFRESException(resp_serializer.errors)
+
+    return Response(
+        data=resp,
+        status=status.HTTP_200_OK
+    )
+
+
 class getVnf(APIView):
     @swagger_auto_schema(
         responses={
@@ -230,18 +247,12 @@ class getVnfs(APIView):
     )
     @view_safe_call_with_log(logger=logger)
     def get(self, request):
-        logger.debug("Query all the vnfs[%s]", fun_name())
-
-        vnf_insts = NfInstModel.objects.all()
-        arr = [fill_resp_data(vnf_inst) for vnf_inst in vnf_insts]
-
-        vnfs_info_serializer = VnfsInfoSerializer(data={'resp_data': arr})
-        if not vnfs_info_serializer.is_valid():
-            raise VNFRESException(vnfs_info_serializer.errors)
-
-        return Response(
-            data={'resp_data': arr},
-            status=status.HTTP_200_OK
+        return query_resources(
+            res_type="Vnfs",
+            logger=logger,
+            resources=NfInstModel.objects.all(),
+            cvt_fun=fill_resp_data,
+            res_serializer=VnfsInfoSerializer
         )
 
 
@@ -254,18 +265,12 @@ class getVms(APIView):
     )
     @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
-        logger.debug("Query all the vms by vnfInstanceId[%s]", fun_name())
-
-        vms = VmInstModel.objects.filter(instid=vnfInstanceId)
-        arr = [fill_vms_data(vm) for vm in vms]
-
-        vm_info_serializer = VmInfoSerializer(data={'resp_data': arr})
-        if not vm_info_serializer.is_valid():
-            raise VNFRESException(vm_info_serializer.errors)
-
-        return Response(
-            data={'resp_data': arr},
-            status=status.HTTP_200_OK
+        return query_resources(
+            res_type="Vms",
+            logger=logger,
+            resources=VmInstModel.objects.filter(instid=vnfInstanceId),
+            cvt_fun=fill_vms_data,
+            res_serializer=VmInfoSerializer
         )
 
 
@@ -300,18 +305,12 @@ class getFlavors(APIView):
     )
     @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
-        logger.debug("Query all the flavors by vnfInstanceId[%s]", fun_name())
-
-        flavours = FlavourInstModel.objects.filter(instid=vnfInstanceId)
-        arr = [fill_flavours_data(flavour) for flavour in flavours]
-
-        flavor_info_serializer = FlavorInfoSerializer(data={'resp_data': arr})
-        if not flavor_info_serializer.is_valid():
-            raise VNFRESException(flavor_info_serializer.errors)
-
-        return Response(
-            data=flavor_info_serializer.data,
-            status=status.HTTP_200_OK
+        return query_resources(
+            res_type="Flavors",
+            logger=logger,
+            resources=FlavourInstModel.objects.filter(instid=vnfInstanceId),
+            cvt_fun=fill_flavours_data,
+            res_serializer=FlavorInfoSerializer
         )
 
 
@@ -340,18 +339,12 @@ class getNetworks(APIView):
     )
     @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
-        logger.debug("Query all the networks by vnfInstanceId[%s]", fun_name())
-
-        networks = NetworkInstModel.objects.filter(instid=vnfInstanceId)
-        arr = [fill_networks_data(network) for network in networks]
-
-        network_info_serializer = NetworkInfoSerializer(data={'resp_data': arr})
-        if not network_info_serializer.is_valid():
-            raise VNFRESException(network_info_serializer.errors)
-
-        return Response(
-            data=network_info_serializer.data,
-            status=status.HTTP_200_OK
+        return query_resources(
+            res_type="Networks",
+            logger=logger,
+            resources=NetworkInstModel.objects.filter(instid=vnfInstanceId),
+            cvt_fun=fill_networks_data,
+            res_serializer=NetworkInfoSerializer
         )
 
 
@@ -376,18 +369,12 @@ class getSubnets(APIView):
     )
     @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
-        logger.debug("Query all the subnets by vnfInstanceId[%s]", fun_name())
-
-        subnets = SubNetworkInstModel.objects.filter(instid=vnfInstanceId)
-        arr = [fill_subnets_data(subnet) for subnet in subnets]
-
-        subnet_info_serializer = SubnetInfoSerializer(data={'resp_data': arr})
-        if not subnet_info_serializer.is_valid():
-            raise VNFRESException(subnet_info_serializer.errors)
-
-        return Response(
-            data=subnet_info_serializer.data,
-            status=status.HTTP_200_OK
+        return query_resources(
+            res_type="Subnets",
+            logger=logger,
+            resources=SubNetworkInstModel.objects.filter(instid=vnfInstanceId),
+            cvt_fun=fill_subnets_data,
+            res_serializer=SubnetInfoSerializer
         )
 
 
@@ -414,18 +401,12 @@ class getCps(APIView):
     )
     @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
-        logger.debug("Query all the cps by vnfInstanceId[%s]", fun_name())
-
-        cps = CPInstModel.objects.filter(ownerid=vnfInstanceId)
-        arr = [fill_cps_data(cp) for cp in cps]
-
-        cp_info_serializer = CpsInfoSerializer(data={'resp_data': arr})
-        if not cp_info_serializer.is_valid():
-            raise VNFRESException(cp_info_serializer.errors)
-
-        return Response(
-            data=cp_info_serializer.data,
-            status=status.HTTP_200_OK
+        return query_resources(
+            res_type="Cps",
+            logger=logger,
+            resources=CPInstModel.objects.filter(ownerid=vnfInstanceId),
+            cvt_fun=fill_cps_data,
+            res_serializer=CpsInfoSerializer
         )
 
 
@@ -451,18 +432,12 @@ class getVolumes(APIView):
     )
     @view_safe_call_with_log(logger=logger)
     def get(self, request, vnfInstanceId):
-        logger.debug("Query all the volumes by vnfInstanceId[%s]", fun_name())
-
-        volumes = StorageInstModel.objects.filter(instid=vnfInstanceId)
-        arr = [fill_volumes_data(v) for v in volumes]
-
-        volume_serializer = VolumeInfoSerializer(data={'resp_data': arr})
-        if not volume_serializer.is_valid():
-            raise VNFRESException(volume_serializer.errors)
-
-        return Response(
-            data=volume_serializer.data,
-            status=status.HTTP_200_OK
+        return query_resources(
+            res_type="Volumes",
+            logger=logger,
+            resources=StorageInstModel.objects.filter(instid=vnfInstanceId),
+            cvt_fun=fill_volumes_data,
+            res_serializer=VolumeInfoSerializer
         )
 
 
