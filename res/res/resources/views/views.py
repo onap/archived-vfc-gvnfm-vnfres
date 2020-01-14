@@ -22,7 +22,6 @@ from rest_framework.views import APIView
 from res.pub.exceptions import VNFRESException
 from res.pub.database.models import StorageInstModel
 from res.pub.database.models import NetworkInstModel
-from res.pub.database.models import VmInstModel
 from res.pub.database.models import FlavourInstModel
 from res.pub.database.models import SubNetworkInstModel
 from res.pub.database.models import CPInstModel
@@ -31,7 +30,6 @@ from res.resources.serializers import CpsInfoSerializer
 from res.resources.serializers import SubnetInfoSerializer
 from res.resources.serializers import NetworkInfoSerializer
 from res.resources.serializers import FlavorInfoSerializer
-from res.resources.serializers import VmInfoSerializer
 from res.resources.views.base_view import view_safe_call_with_log
 
 logger = logging.getLogger(__name__)
@@ -52,46 +50,6 @@ def query_resources(res_type, logger, resources, cvt_fun, res_serializer):
         data=resp,
         status=status.HTTP_200_OK
     )
-
-
-class getVms(APIView):
-    @swagger_auto_schema(
-        responses={
-            status.HTTP_200_OK: VmInfoSerializer(),
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
-        }
-    )
-    @view_safe_call_with_log(logger=logger)
-    def get(self, request, vnfInstanceId):
-        return query_resources(
-            res_type="Vms",
-            logger=logger,
-            resources=VmInstModel.objects.filter(instid=vnfInstanceId),
-            cvt_fun=fill_vms_data,
-            res_serializer=VmInfoSerializer
-        )
-
-
-def fill_vms_data(vm):
-    vms_data = {
-        "vmid": vm.vmid,
-        "vimid": vm.vimid,
-        "resouceid": vm.resouceid,
-        "insttype": vm.insttype,
-        "instid": vm.instid,
-        "vmname": vm.vmname,
-        "operationalstate": vm.operationalstate,
-        "tenant": vm.tenant,
-        "is_predefined": vm.is_predefined,
-        "security_groups": vm.security_groups,
-        "flavor_id": vm.flavor_id,
-        "availability_zone": vm.availability_zone,
-        "server_group": vm.server_group,
-        "volume_array": vm.volume_array,
-        "metadata": vm.metadata,
-        "nic_array": vm.nic_array
-    }
-    return vms_data
 
 
 class getFlavors(APIView):
