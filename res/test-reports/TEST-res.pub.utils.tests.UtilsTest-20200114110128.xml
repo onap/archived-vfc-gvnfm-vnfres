@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="res.pub.utils.tests.UtilsTest-20200114110128" tests="3" time="0.002">
+	<properties/>
+	<system-out>
+<![CDATA[]]>	</system-out>
+	<system-err>
+<![CDATA[]]>	</system-err>
+	<testcase classname="res.pub.utils.tests.UtilsTest" name="test_enum" time="0.000"/>
+	<testcase classname="res.pub.utils.tests.UtilsTest" name="test_fun_name" time="0.002"/>
+	<testcase classname="res.pub.utils.tests.UtilsTest" name="test_ignore_case_get" time="0.000"/>
+</testsuite>

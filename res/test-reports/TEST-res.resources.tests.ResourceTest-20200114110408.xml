@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" name="res.resources.tests.ResourceTest-20200114110408" tests="8" time="0.287">
+	<properties/>
+	<system-out>
+<![CDATA[]]>	</system-out>
+	<system-err>
+<![CDATA[]]>	</system-err>
+	<testcase classname="res.resources.tests.ResourceTest" name="test_get_cps" time="0.012"/>
+	<testcase classname="res.resources.tests.ResourceTest" name="test_get_flavors" time="0.018"/>
+	<testcase classname="res.resources.tests.ResourceTest" name="test_get_networks" time="0.017"/>
+	<testcase classname="res.resources.tests.ResourceTest" name="test_get_subnets" time="0.013"/>
+	<testcase classname="res.resources.tests.ResourceTest" name="test_get_vms" time="0.027"/>
+	<testcase classname="res.resources.tests.ResourceTest" name="test_get_vnf" time="0.159"/>
+	<testcase classname="res.resources.tests.ResourceTest" name="test_get_vnfs" time="0.030"/>
+	<testcase classname="res.resources.tests.ResourceTest" name="test_get_volumes" time="0.011"/>
+</testsuite>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="1" failures="0" name="res.swagger.tests.TestSwagger-20200114110408" tests="1" time="2.101">
+	<properties/>
+	<system-out>
+<![CDATA[]]>	</system-out>
+	<system-err>
+<![CDATA[No handlers could be found for logger "drf_yasg.codecs"
+]]>	</system-err>
+	<testcase classname="res.swagger.tests.TestSwagger" name="test_swagger_json" time="2.101">
+		<error message="spec validation failed: {'ssv': '(&quot;\'RefResolver\' object has no attribute \'_scopes_stack\'&quot;, AttributeError(&quot;\'RefResolver\' object has no attribute \'_scopes_stack\'&quot;,))'}" type="SwaggerValidationError">
+<![CDATA[Traceback (most recent call last):
+  File "/root/hw/vnfres/res/res/swagger/tests.py", line 29, in test_swagger_json
+    response = self.client.get(url, format='json')
+  File "/usr/lib/python2.7/site-packages/django/test/client.py", line 536, in get
+    **extra)
+  File "/usr/lib/python2.7/site-packages/django/test/client.py", line 340, in get
+    return self.generic('GET', path, secure=secure, **r)
+  File "/usr/lib/python2.7/site-packages/django/test/client.py", line 416, in generic
+    return self.request(**r)
+  File "/usr/lib/python2.7/site-packages/django/test/client.py", line 501, in request
+    six.reraise(*exc_info)
+  File "/usr/lib/python2.7/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/usr/lib/python2.7/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/usr/lib/python2.7/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/usr/lib/python2.7/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/usr/lib/python2.7/site-packages/rest_framework/response.py", line 72, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/usr/lib/python2.7/site-packages/drf_yasg/renderers.py", line 37, in render
+    return codec.encode(data)
+  File "/usr/lib/python2.7/site-packages/drf_yasg/codecs.py", line 82, in encode
+    raise exc
+SwaggerValidationError: spec validation failed: {'ssv': '("\'RefResolver\' object has no attribute \'_scopes_stack\'", AttributeError("\'RefResolver\' object has no attribute \'_scopes_stack\'",))'}
+
+Stderr:
+No handlers could be found for logger "drf_yasg.codecs"
+]]>		</error>
+	</testcase>
+</testsuite>
