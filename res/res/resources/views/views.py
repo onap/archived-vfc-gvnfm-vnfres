@@ -22,14 +22,12 @@ from rest_framework.views import APIView
 from res.pub.exceptions import VNFRESException
 from res.pub.database.models import StorageInstModel
 from res.pub.database.models import NetworkInstModel
-from res.pub.database.models import FlavourInstModel
 from res.pub.database.models import SubNetworkInstModel
 from res.pub.database.models import CPInstModel
 from res.resources.serializers import VolumeInfoSerializer
 from res.resources.serializers import CpsInfoSerializer
 from res.resources.serializers import SubnetInfoSerializer
 from res.resources.serializers import NetworkInfoSerializer
-from res.resources.serializers import FlavorInfoSerializer
 from res.resources.views.base_view import view_safe_call_with_log
 
 logger = logging.getLogger(__name__)
@@ -50,40 +48,6 @@ def query_resources(res_type, logger, resources, cvt_fun, res_serializer):
         data=resp,
         status=status.HTTP_200_OK
     )
-
-
-class getFlavors(APIView):
-    @swagger_auto_schema(
-        responses={
-            status.HTTP_200_OK: FlavorInfoSerializer(),
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
-        }
-    )
-    @view_safe_call_with_log(logger=logger)
-    def get(self, request, vnfInstanceId):
-        return query_resources(
-            res_type="Flavors",
-            logger=logger,
-            resources=FlavourInstModel.objects.filter(instid=vnfInstanceId),
-            cvt_fun=fill_flavours_data,
-            res_serializer=FlavorInfoSerializer
-        )
-
-
-def fill_flavours_data(f):
-    flavours_data = {
-        "flavourid": f.flavourid,
-        "name": f.name,
-        "vcpu": f.vcpu,
-        "memory": f.memory,
-        "extraspecs": f.extraspecs,
-        "instid": f.instid,
-        "tenant": f.tenant,
-        "vimid": f.vimid,
-        "resouceid": f.resouceid,
-        "create_time": f.create_time
-    }
-    return flavours_data
 
 
 class getNetworks(APIView):
