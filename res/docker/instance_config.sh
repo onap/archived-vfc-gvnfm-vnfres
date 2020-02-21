@@ -9,11 +9,11 @@ if [ $MSB_PROTO ]; then
 fi
 
 if [ $MSB_IP ]; then
-    sed -i "s|MSB_SERVICE_IP.*|MSB_SERVICE_IP = '$MSB_IP'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
+    sed -i "s|MSB_SERVICE_IP = .*|MSB_SERVICE_IP = '$MSB_IP'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
 fi
 
 if [ $MSB_PORT ]; then
-    sed -i "s|MSB_SERVICE_PORT.*|MSB_SERVICE_PORT = '$MSB_PORT'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
+    sed -i "s|MSB_SERVICE_PORT = .*|MSB_SERVICE_PORT = '$MSB_PORT'|" vfc/gvnfm/vnfres/res/res/pub/config/config.py
 fi
 
 if [ $SERVICE_IP ]; then
