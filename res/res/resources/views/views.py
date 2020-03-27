@@ -50,36 +50,6 @@ def query_resources(res_type, logger, resources, cvt_fun, res_serializer):
     )
 
 
-class getNetworks(APIView):
-    @swagger_auto_schema(
-        responses={
-            status.HTTP_200_OK: NetworkInfoSerializer(),
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
-        }
-    )
-    @view_safe_call_with_log(logger=logger)
-    def get(self, request, vnfInstanceId):
-        return query_resources(
-            res_type="Networks",
-            logger=logger,
-            resources=NetworkInstModel.objects.filter(instid=vnfInstanceId),
-            cvt_fun=fill_networks_data,
-            res_serializer=NetworkInfoSerializer
-        )
-
-
-def fill_networks_data(network):
-    networks_data = {
-        "networkid": network.networkid,
-        "vimid": network.vimid,
-        "resouceid": network.resouceid,
-        "insttype": network.insttype,
-        "instid": network.instid,
-        "name": network.name
-    }
-    return networks_data
-
-
 class getSubnets(APIView):
     @swagger_auto_schema(
         responses={
