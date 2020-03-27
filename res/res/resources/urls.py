@@ -14,6 +14,7 @@
 
 from django.conf.urls import url
 
+from res.resources.views.get_networks_view import GetNetworksView
 from res.resources.views.get_flavors_view import GetFlavorsView
 from res.resources.views.get_vnfs_view import GetVnfView
 from res.resources.views.get_vnfs_view import GetVnfsView
@@ -26,7 +27,7 @@ urlpatterns = [
     url(r'^api/vnfres/v1/vnfs$', GetVnfsView.as_view(), name='get_vnfs'),
     url(r'^api/vnfres/v1/(?P<vnf_instance_id>[0-9a-zA-Z\-\_]+)/vms$', GetVmsView.as_view(), name='get_vms'),
     url(r'^api/vnfres/v1/(?P<vnf_instance_id>[0-9a-zA-Z\-\_]+)/flavors$', GetFlavorsView.as_view(), name='get_flavors'),
-    url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/networks$', views.getNetworks.as_view(), name='get_networks'),
+    url(r'^api/vnfres/v1/(?P<vnf_instance_id>[0-9a-zA-Z\-\_]+)/networks$', GetNetworksView.as_view(), name='get_networks'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/subnets$', views.getSubnets.as_view(), name='get_subnets'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/cps$', views.getCps.as_view(), name='get_cps'),
     url(r'^api/vnfres/v1/(?P<vnfInstanceId>[0-9a-zA-Z\-\_]+)/volumes$', views.getVolumes.as_view(), name='get_volumes'),

@@ -21,13 +21,11 @@ from rest_framework.views import APIView
 
 from res.pub.exceptions import VNFRESException
 from res.pub.database.models import StorageInstModel
-from res.pub.database.models import NetworkInstModel
 from res.pub.database.models import SubNetworkInstModel
 from res.pub.database.models import CPInstModel
 from res.resources.serializers import VolumeInfoSerializer
 from res.resources.serializers import CpsInfoSerializer
 from res.resources.serializers import SubnetInfoSerializer
-from res.resources.serializers import NetworkInfoSerializer
 from res.resources.views.base_view import view_safe_call_with_log
 
 logger = logging.getLogger(__name__)
@@ -48,36 +46,6 @@ def query_resources(res_type, logger, resources, cvt_fun, res_serializer):
         data=resp,
         status=status.HTTP_200_OK
     )
-
-
-class getNetworks(APIView):
-    @swagger_auto_schema(
-        responses={
-            status.HTTP_200_OK: NetworkInfoSerializer(),
-            status.HTTP_500_INTERNAL_SERVER_ERROR: 'internal error'
-        }
-    )
-    @view_safe_call_with_log(logger=logger)
-    def get(self, request, vnfInstanceId):
-        return query_resources(
-            res_type="Networks",
-            logger=logger,
-            resources=NetworkInstModel.objects.filter(instid=vnfInstanceId),
-            cvt_fun=fill_networks_data,
-            res_serializer=NetworkInfoSerializer
-        )
-
-
-def fill_networks_data(network):
-    networks_data = {
-        "networkid": network.networkid,
-        "vimid": network.vimid,
-        "resouceid": network.resouceid,
-        "insttype": network.insttype,
-        "instid": network.instid,
-        "name": network.name
-    }
-    return networks_data
 
 
 class getSubnets(APIView):
