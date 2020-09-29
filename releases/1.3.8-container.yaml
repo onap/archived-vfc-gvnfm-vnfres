@@ -1,0 +1,10 @@
+distribution_type: 'container'
+container_release_tag: '1.3.8'
+project: 'vfc-gvnfm-vnfres'
+container_pull_registry: nexus3.onap.org:10003
+container_push_registry: nexus3.onap.org:10002
+log_dir: 'vfc-gvnfm-vnfres-master-docker-java-version-shell-daily/1171/'
+ref: 'a76d3a56951a763cc2f3c78ae2bb8717ad3962d4'
+containers:
+    - name: 'vfc/vnfres'
+      version: '1.3.8-STAGING-20200929T014009'
