@@ -17,12 +17,11 @@ import sys
 import platform
 
 import res.pub.redisco
+import yaml
 
 from res.pub.config.config import REDIS_HOST, REDIS_PORT, REDIS_PASSWD
 from res.pub.config.config import DB_NAME, DB_IP, DB_USER, DB_PASSWD, DB_PORT
 from logging import config
-from onaplogging import monkey
-monkey.patch_all()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -62,7 +61,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'res.middleware.LogContextMiddleware'
 ]
 
 ROOT_URLCONF = 'res.urls'
@@ -156,8 +154,15 @@ if platform.system() == 'Windows' or 'test' in sys.argv:
     }
 else:
     LOGGING_CONFIG = None
+
+    log_path = '/var/log/onap/vfc/gvnfm-vnfres'
+    if not os.path.exists(log_path):
+        os.makedirs(log_path)
+
     LOGGING_FILE = os.path.join(BASE_DIR, 'res/log.yml')
-    config.yamlConfig(filepath=LOGGING_FILE, watchDog=True)
+    with open(file=LOGGING_FILE, mode='r', encoding="utf-8")as file:
+        logging_yaml = yaml.load(stream=file, Loader=yaml.FullLoader)
+    config.dictConfig(config=logging_yaml)
 
 
 if 'test' in sys.argv:
