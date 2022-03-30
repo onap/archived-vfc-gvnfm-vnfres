@@ -12,7 +12,7 @@ install_sf(){
     rm -rf vfc-gvnfm-vnfres.zip
     wait
     pip install --upgrade setuptools pip
-    pip install --no-cache-dir --pre -r  /service/vfc/gvnfm/vnfres/res/requirements.txt
+    pip install -r /service/vfc/gvnfm/vnfres/res/requirements.txt
 }
 
 add_user(){
